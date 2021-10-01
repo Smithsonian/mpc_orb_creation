@@ -27,3 +27,9 @@ def filepath_demo():
     
     # List of defining JSONs that represent generally valid fel-files
     print( filepath_dict['orbfit_defining_sample_general'] )
+
+
+
+
+if __name__ ==' __main__':
+    filepath_demo()
