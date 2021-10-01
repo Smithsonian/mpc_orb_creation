@@ -42,7 +42,9 @@ def bootstrap( VERBOSE=False ):
      - schema-json files in ../json_files/schema_json/
     
     """
-    
+    if VERBOSE:
+        print('-------bootstrap.bootstrap()---------')
+
     # (1) Create "orbfit felfile" schema from defining sample(s)
     #     NB: This creates 2 kinds of schema file, (i) general and (ii) conversion-specific
     schema.create_orbfit_felfile_schema_from_defining_sample_json( )#VERBOSE=VERBOSE )
