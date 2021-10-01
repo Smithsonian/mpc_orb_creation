@@ -111,7 +111,7 @@ def get_schema_from_builder(list_of_sample_dicts):
     # Convert to schema
     return builder.to_schema()
 
-def create_orbfit_felfile_schema_from_defining_sample_json():
+def create_orbfit_felfile_schema_from_defining_sample_json( VERBOSE=False ):
     """
     Use predefined sample json(s) as the basis to construct json schema for the orbfit felfiles
     
@@ -121,6 +121,9 @@ def create_orbfit_felfile_schema_from_defining_sample_json():
     
     *** IT IS EXPECTED THAT THIS WILL BE USED EXTREMELY RARELY ONCE WE HAVE EVERYTHING SET-UP ***
     """
+
+    if VERBOSE:
+        print('-------schema.create_orbfit_felfile_schema_from_defining_sample_json()---------')
 
     # load defining sample
     list_of_sample_dicts_general = [load_json( _ ) for _ in filepath_dict['orbfit_defining_sample_general'] ]

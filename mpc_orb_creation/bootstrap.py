@@ -47,7 +47,7 @@ def bootstrap( VERBOSE=False ):
 
     # (1) Create "orbfit felfile" schema from defining sample(s)
     #     NB: This creates 2 kinds of schema file, (i) general and (ii) conversion-specific
-    schema.create_orbfit_felfile_schema_from_defining_sample_json( )#VERBOSE=VERBOSE )
+    schema.create_orbfit_felfile_schema_from_defining_sample_json( VERBOSE=VERBOSE )
 
 
     # (2) Convert "orbfit felfile" defining sample(s) to create defining "mpcorb" defining sample(s)
