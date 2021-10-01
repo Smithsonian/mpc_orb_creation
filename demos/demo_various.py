@@ -104,3 +104,4 @@ def orbfit_results_query_demo():
 if __name__ == "__main__":
     filepath_demo()
     bootstrap_demo()
+    orbfit_results_query_demo() 
