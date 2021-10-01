@@ -15,6 +15,10 @@ pack_dir  = dirname(dirname(abspath(__file__))) # Package directory
 code_dir  = join(pack_dir, 'mpc_orb_creation')  # Code dir
 sys.path.append(code_dir)
 
+# Import the objects / functions to be demonstrated ...
+from filepaths import filepath_dict  # convenience filepath-defn dictionary ...
+import bootstrap                     # create all schema JSONs ...
+
 
 def filepath_demo():
     ''' The file mpc_orb_creation/mpc_orb_creation/filepaths.py defines the locations of
@@ -23,8 +27,6 @@ def filepath_demo():
         The filepaths.py file has a number of comments to describe what is in the various locations, but this filepath_demo() function simply highlights a few key areas '''
     print('-------filepath_demo---------')
     
-    # Import the convenience filepath-defn dictionary
-    from filepaths import filepath_dict
     
     # ---- (1) ---- List of defining JSONs that represent generally valid fel-files
     print()
@@ -50,9 +52,6 @@ def bootstrap_demo():
     Here we demonstrate how to use it and what it does
     '''
     print('-------bootstrap_demo---------')
-    import bootstrap
-
-    
     
     # Explicitly delete any of the schema files and/or "numerical conversion" files ...
     # that have previously been generated from the above defining samples
