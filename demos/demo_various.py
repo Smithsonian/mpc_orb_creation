@@ -119,6 +119,7 @@ def schema_validation_demo_1():
     standard_epoch_dict = result_dict['standard_epoch_json']
     schema.validate_orbfit_general(standard_epoch_dict , VERBOSE=True )
     schema.validate_orbfit_conversion(standard_epoch_dict , VERBOSE=True )
+    schema.validate_mpcorb(standard_epoch_dict , VERBOSE=True )
 
 if __name__ == "__main__":
     filepath_demo()
