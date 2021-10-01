@@ -87,24 +87,26 @@ def validate_mpcorb( arg ):
 
 # Schema Creation functions
 # -----------------------
-def get_schema_from_builder(list_of_sample_dicts):
+def get_schema_from_builder(list_of_sample_dicts , VERBOSE=False ):
     """
     This code uses the "genson" package to create a json "schema" dictionary
     The schema is created by reading from a list of defining sample dicts,
     and using those as the basis for the schema.
     """
 
-    # Instantiate Genson object ...
-    # https://pypi.org/project/genson/
+    if VERBOSE:
+        print('-------schema.get_schema_from_builder()---------')
+
+    # Instantiate Genson object : https://pypi.org/project/genson/
     builder = SchemaBuilder()
     builder.add_schema({"type": "object", "properties": {}})
 
     # Add data from defining sample file
     assert isinstance(list_of_sample_dicts , list)
     for n, d in enumerate(list_of_sample_dicts):
-        print(n)
-        print(d)
-        print()
+        #print(n)
+        #print(d)
+        #print()
         assert isinstance(d, dict)
         builder.add_object(d)
 
@@ -130,8 +132,8 @@ def create_orbfit_felfile_schema_from_defining_sample_json( VERBOSE=False ):
     list_of_sample_dicts_convert = [load_json( _ ) for _ in filepath_dict['orbfit_defining_sample_convert'] ]
 
     # instantiate "builder" & use to convert json-dict to an (initial) schema
-    schema_dict_general = get_schema_from_builder(list_of_sample_dicts_general)
-    schema_dict_convert = get_schema_from_builder(list_of_sample_dicts_convert)
+    schema_dict_general = get_schema_from_builder(list_of_sample_dicts_general , VERBOSE=VERBOSE)
+    schema_dict_convert = get_schema_from_builder(list_of_sample_dicts_convert , VERBOSE=VERBOSE)
 
     # do orbfit-specific modifications
     schema_dict_general  = do_orbfit_general_schema_mods(schema_dict_general)
