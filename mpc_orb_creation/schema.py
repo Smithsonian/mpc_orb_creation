@@ -245,7 +245,7 @@ mpcorb_description_dict = {
     # Top level Specification
     # N.B. Explicitly editing requirements so that we
     # require "CAR" and "COM" coords, leaving other coords to be optional
-    "required": [ "CAR","COM" ]
+    "required": [ "CAR","COM" ],
     "description" : "JSON best-fit orbit for single object",
     "extended_description" : "Standardized orbit exchange format. Designed to communicate the best-fit orbit for a single minor planet or comet. ",
     # ------------------------------------------
