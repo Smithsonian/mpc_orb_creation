@@ -14,6 +14,8 @@ import sys
 pack_dir  = dirname(dirname(abspath(__file__))) # Package directory
 code_dir  = join(pack_dir, 'mpc_orb_creation')  # Code dir
 sys.path.append(code_dir)
+from os.path import join, dirname, abspath, isfile
+
 
 # Import the objects / functions to be demonstrated ...
 from filepaths import filepath_dict  # convenience filepath-defn dictionary ...
