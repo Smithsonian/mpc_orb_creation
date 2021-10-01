@@ -21,7 +21,7 @@ def filepath_demo():
         many important files and directories within the repo
         
         The filepaths.py file has a number of comments to describe what is in the various locations, but this filepath_demo() function simply highlights a few key areas '''
-    print('-------filepath_demo---------)
+    print('-------filepath_demo---------')
     
     # Import the convenience filepath-defn dictionary
     from filepaths import filepath_dict
@@ -49,7 +49,7 @@ def bootstrap_demo():
     
     Here we demonstrate how to use it and what it does
     '''
-    print('-------bootstrap_demo---------)
+    print('-------bootstrap_demo---------')
     import bootstrap
 
     
