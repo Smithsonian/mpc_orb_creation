@@ -1,5 +1,7 @@
 # mpc_orb_creation
 
+Code to create validation schema for orbfit-jsons and mpcorb-jsons
+
 This repo is intended for internal MPC usage. 
 
 It is likely to only work on specific MPC machines with specific internal libraries available (e.g. "marsden") 
