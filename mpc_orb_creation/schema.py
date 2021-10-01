@@ -28,8 +28,11 @@ def load_json( json_filepath ):
     with open( json_filepath ) as f:
         return json.load(f)
         
-def save_json( json_filepath , data_dict ):
+def save_json( json_filepath , data_dict, VERBOSE=False ):
     """ Being very careful here as any jsons saved by this module will be the main standardizing schema """
+    if VERBOSE:
+        print('-------schema.save_json()---------')
+
     if isfile(json_filepath):
         raise Exception(f"The important json file {json_filepath} already exists ... To prevent accidental over-writes, this routine will go no further ... ")
     else:
@@ -39,11 +42,13 @@ def save_json( json_filepath , data_dict ):
 
 # Validation functions
 # -----------------------
-def validate_orbfit_general(arg):
+def validate_orbfit_general(arg, VERBOSE=False):
     """
     Test whether json is a valid example of an orbfit-felfile json
     Input can be json-filepath, or dictionary of json contents
     """
+    if VERBOSE:
+        print('-------schema.validate_orbfit_general()---------')
 
     # interpret the input (allow dict or json-filepath)
     orbfit_dict, input_filepath = interpret.interpret(arg)
@@ -54,11 +59,13 @@ def validate_orbfit_general(arg):
 
     return True
 
-def validate_orbfit_conversion( arg ):
+def validate_orbfit_conversion( arg , VERBOSE=False ):
     """
     Test whether json is a valid example of an orbfit-felfile json that is suitable for conversion to mpcorb-format
     Input can be json-filepath, or dictionary of json contents
     """
+    if VERBOSE:
+        print('-------schema.validate_orbfit_conversion()---------')
 
     # interpret the input (allow dict or json-filepath)
     data, input_filepath = interpret.interpret(arg)
@@ -69,11 +76,13 @@ def validate_orbfit_conversion( arg ):
     
     return True
 
-def validate_mpcorb( arg ):
+def validate_mpcorb( arg , VERBOSE=False ):
     """
     Test whether json is a valid example of an mpcorb json
     Input can be json-filepath, or dictionary of json contents
     """
+    if VERBOSE:
+        print('-------schema.validate_mpcorb()---------')
 
     # interpret the input (allow dict or json-filepath)
     data, input_filepath = interpret.interpret(arg)
@@ -136,8 +145,8 @@ def create_orbfit_felfile_schema_from_defining_sample_json( VERBOSE=False ):
     schema_dict_convert = get_schema_from_builder(list_of_sample_dicts_convert , VERBOSE=VERBOSE)
 
     # do orbfit-specific modifications
-    schema_dict_general  = do_orbfit_general_schema_mods(schema_dict_general)
-    schema_dict_convert  = do_orbfit_conversion_schema_mods(schema_dict_convert)
+    schema_dict_general  = do_orbfit_general_schema_mods(schema_dict_general,    VERBOSE=VERBOSE)
+    schema_dict_convert  = do_orbfit_conversion_schema_mods(schema_dict_convert, VERBOSE=VERBOSE)
 
     # Save schema-dict to file
     save_json( filepath_dict['orbfit_general_schema'] ,    schema_dict_general )
@@ -145,30 +154,36 @@ def create_orbfit_felfile_schema_from_defining_sample_json( VERBOSE=False ):
 
     return True
 
-def do_orbfit_general_schema_mods(schema_dict):
+def do_orbfit_general_schema_mods(schema_dict , VERBOSE=False ):
     """
     No schema mods currently implemented
     Additional modifications likely to be required to refine the definition/schema
     """
+    if VERBOSE:
+        print('-------schema.do_orbfit_general_schema_mods()---------')
     return schema_dict
 
-def do_orbfit_conversion_schema_mods(schema_dict):
+def do_orbfit_conversion_schema_mods(schema_dict , VERBOSE=False ):
     """
     Minimal schema mods currently implemented
     Additional modifications likely to be required to refine the definition/schema
     """
-    
+    if VERBOSE:
+        print('-------schema.do_orbfit_conversion_schema_mods()---------')
+
     # (1) Require "CAR" and "COM" coords, other coords are optional
     schema_dict["required"] = [ "CAR" , "COM" ]
     return schema_dict
 
-def create_mpcorb_schema_from_defining_sample_json():
+def create_mpcorb_schema_from_defining_sample_json(VERBOSE=False ):
     """
     Use a predefined sample json as the basis to construct a json schema for the mpc_orb files
     Note that some "by-hand" modifications are done to the basic schema generated from the defining sample
     The result is saved and thus defines the standard schema file
     *** IT IS EXPECTED THAT THIS WILL BE USED EXTREMELY RARELY ***
     """
+    if VERBOSE:
+        print('-------schema.create_mpcorb_schema_from_defining_sample_json()---------')
 
     # load defining sample
     list_of_sample_dicts = [load_json( _ ) for _ in filepath_dict['mpcorb_defining_sample'] ]
@@ -184,12 +199,14 @@ def create_mpcorb_schema_from_defining_sample_json():
     
     return True
 
-def do_mpcorb_schema_mods(schema_dict):
+def do_mpcorb_schema_mods(schema_dict , VERBOSE=False ):
     """
     Minimal schema mods currently implemented
     Additional modifications likely to be required to refine the definition/schema
     """
-        
+    if VERBOSE:
+        print('-------schema.do_mpcorb_schema_mods()---------')
+
     # Recursively walk through the levels of the schema, adding
     #     requirements & descriptions where possible
     walk(schema_dict, mpcorb_description_dict)
@@ -198,7 +215,7 @@ def do_mpcorb_schema_mods(schema_dict):
 
     return schema_dict
 
-def walk( schema_d , description_d ):
+def walk( schema_d , description_d , VERBOSE=False ):
     ''' Recursively walk through the levels of the schema, adding requirements & descriptions where possible
     
     inputs:
@@ -212,6 +229,9 @@ def walk( schema_d , description_d ):
     --------
     
     '''
+    if VERBOSE:
+        print('-------schema.walk()---------')
+
     if "properties" in schema_d.keys() :
     
         # (a) See if there is a "required" and/or "description" to be added ...

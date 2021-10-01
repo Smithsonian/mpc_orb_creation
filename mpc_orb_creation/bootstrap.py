@@ -61,17 +61,17 @@ def bootstrap( VERBOSE=False ):
         orbfit_dict,input_filepath = interpret.interpret(fp_in)
         
         # Validate (unnecessary)
-        schema.validate_orbfit_conversion(orbfit_dict)
+        schema.validate_orbfit_conversion(orbfit_dict , VERBOSE=VERBOSE )
         
         # Convert to mpc_orb format
         mpcorb_format_dict = convert.std_format_els(orbfit_dict)
         
         # Save to file
-        schema.save_json(fp_out, mpcorb_format_dict)
+        schema.save_json(fp_out, mpcorb_format_dict , VERBOSE=VERBOSE )
 
 
     # (3) Create "mpcorb" schema from defining sample(s)
-    schema.create_mpcorb_schema_from_defining_sample_json()
+    schema.create_mpcorb_schema_from_defining_sample_json(VERBOSE=VERBOSE)
 
 if __name__ == "__main__":
     bootstrap()
