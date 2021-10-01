@@ -22,7 +22,7 @@ from os import remove
 from filepaths import filepath_dict  # convenience filepath-defn dictionary ...
 import bootstrap                     # create all schema JSONs ...
 import schema
-
+import convert
 
 def filepath_demo():
     ''' The file mpc_orb_creation/mpc_orb_creation/filepaths.py defines the locations of
@@ -132,11 +132,13 @@ def schema_validation_demo_1():
     schema.validate_mpcorb(standard_epoch_dict , VERBOSE=True )
     
     
-def mpc_orb_creation_demo_1():
+def mpc_orb_convert_demo_1():
     '''
-    
+    Demonstration of the use of the "...convert..." functions
+    Here I show that a dictionary from the orbfit_results table can be converted into a valid example of the mpc-orb.json format
+
     '''
-    print('\n'*3, '-------mpc_orb_creation_demo_1---------')
+    print('\n'*3, '-------mpc_orb_convert_demo_1---------')
     
     # Query orbfit_table as per *orbfit_results_query_demo* above
     sys.path.append('/sa/orbit_pipeline/')
