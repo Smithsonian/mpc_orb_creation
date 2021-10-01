@@ -18,10 +18,10 @@ from os.path import join, dirname, abspath, isfile
 from os import remove
 
 
-
 # Import the objects / functions to be demonstrated ...
 from filepaths import filepath_dict  # convenience filepath-defn dictionary ...
 import bootstrap                     # create all schema JSONs ...
+import schema
 
 
 def filepath_demo():
@@ -101,7 +101,28 @@ def orbfit_results_query_demo():
     for k,v in result.items():
         print(k,":",v)
         
+        
+def schema_validation_demo_1():
+    '''
+    
+    '''
+    print('\n'*3, '-------schema_validation_demo_1---------')
+    
+    # Query orbfit_table as per *orbfit_results_query_demo* above
+    sys.path.append('/sa/orbit_pipeline/')
+    import db_query_orbits
+    unpacked_primary_desig = '2020 AB1'
+    result = db_query_orbits.QueryOrbfitResults().get_orbit_row( unpacked_primary_desig )
+    
+    #
+    print('Attempting validation...')
+    schema.validate_orbfit_general(orbfit_dict , VERBOSE=True )
+    schema.validate_orbfit_conversion(orbfit_dict , VERBOSE=True )
+
 if __name__ == "__main__":
     filepath_demo()
     bootstrap_demo()
-    orbfit_results_query_demo() 
+    orbfit_results_query_demo()
+    
+    
+    
