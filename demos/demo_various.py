@@ -29,7 +29,7 @@ def filepath_demo():
         many important files and directories within the repo
         
         The filepaths.py file has a number of comments to describe what is in the various locations, but this filepath_demo() function simply highlights a few key areas '''
-    print('-------filepath_demo---------')
+    print('\n'*3, '-------filepath_demo---------')
     
     
     # ---- (1) ---- List of defining JSONs that represent generally valid fel-files
@@ -55,7 +55,7 @@ def bootstrap_demo():
     
     Here we demonstrate how to use it and what it does
     '''
-    print('-------bootstrap_demo---------')
+    print('\n'*3, '-------bootstrap_demo---------')
     
     # Explicitly delete any of the schema files and/or "numerical conversion" files ...
     # that have previously been generated from the above defining samples
@@ -79,6 +79,28 @@ def bootstrap_demo():
 
 
 
+def orbfit_results_query_demo():
+    '''
+    The /sa/orbit_pipeline/db_query_orbits.py module has code that queries the orbfit_results table
+    
+    Here I demonstrate how to use it...
+    
+    (This is outside the scope of this mpc_orb_creation module, but I just want to remind myself how to use the code...)
+    
+    '''
+    print('\n'*3, '-------orbfit_results_query_demo---------')
+    
+    # Import library ...
+    sys.path.append('/sa/orbit_pipeline/')
+    import db_query_orbits
+
+    # Query table for desig: expect a dictionary to be returned...
+    # - dict_keys(['id', 'packed_primary_provisional_designation', 'unpacked_primary_provisional_designation', 'rwo_json', 'standard_epoch_json', 'mid_epoch_json', 'quality_json', 'created_at', 'updated_at'])
+    unpacked_primary_desig = '2020 AB1'
+    result = db_query_orbits.QueryOrbfitResults().get_orbit_row( unpacked_primary_desig )
+    for k,v in result.items()
+        print(k,":",v)
+        
 if __name__ == "__main__":
     filepath_demo()
     bootstrap_demo()
