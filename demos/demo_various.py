@@ -158,6 +158,6 @@ if __name__ == "__main__":
     filepath_demo()
     bootstrap_demo()
     orbfit_results_query_demo()
-    schema_validation_demo_1()
+    #schema_validation_demo_1()
     mpc_orb_creation_demo_1()
     
