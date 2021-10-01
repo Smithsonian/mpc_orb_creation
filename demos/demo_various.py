@@ -104,7 +104,11 @@ def orbfit_results_query_demo():
         
 def schema_validation_demo_1():
     '''
-    
+    Demonstration of the use of the "...validate..." functions
+    Here I show that a dictionary from the orbfit_results table can be show to be a valid example of
+    (a) the data format expected from orbfit
+    and
+    (b) the data format that can be converted into an mpc-orb.json format file
     '''
     print('\n'*3, '-------schema_validation_demo_1---------')
     
@@ -122,14 +126,38 @@ def schema_validation_demo_1():
     # We expect thefollowing 2 to pass ...
     schema.validate_orbfit_general(standard_epoch_dict , VERBOSE=True )
     schema.validate_orbfit_conversion(standard_epoch_dict , VERBOSE=True )
-    # We expect the following to fail
+    
+    # We expect the following to fail (because the standard_epoch_dict from orbfit is ready to be converted to mpc-orb.json format, but it is NOT an actual example of this format)
     print('***WE EXPECT A FAILURE !!!***')
     schema.validate_mpcorb(standard_epoch_dict , VERBOSE=True )
+    
+    
+def mpc_orb_creation_demo_1():
+    '''
+    
+    '''
+    print('\n'*3, '-------mpc_orb_creation_demo_1---------')
+    
+    # Query orbfit_table as per *orbfit_results_query_demo* above
+    sys.path.append('/sa/orbit_pipeline/')
+    import db_query_orbits
+    unpacked_primary_desig = '2020 AB1'
+    result_dict = db_query_orbits.QueryOrbfitResults().get_orbit_row( unpacked_primary_desig )
+    standard_epoch_dict = result_dict['standard_epoch_json']
+
+    # Validate the orbfit results dictionary as per the *schema_validation_demo_1* funciton above
+    schema.validate_orbfit_general(standard_epoch_dict , VERBOSE=True )
+    schema.validate_orbfit_conversion(standard_epoch_dict , VERBOSE=True )
+    
+    # Convert to mpc_orb format
+    mpcorb_format_dict = convert.std_format_els(standard_epoch_dict)
+
+
 
 if __name__ == "__main__":
     filepath_demo()
     bootstrap_demo()
     orbfit_results_query_demo()
     schema_validation_demo_1()
-    
+    mpc_orb_creation_demo_1()
     
