@@ -1,0 +1,1715 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "CAR": {
+            "type": "object",
+            "properties": {
+                "coordtype": {
+                    "type": "string"
+                },
+                "cov00": {
+                    "type": "string"
+                },
+                "cov01": {
+                    "type": "string"
+                },
+                "cov02": {
+                    "type": "string"
+                },
+                "cov03": {
+                    "type": "string"
+                },
+                "cov04": {
+                    "type": "string"
+                },
+                "cov05": {
+                    "type": "string"
+                },
+                "cov06": {
+                    "type": "string"
+                },
+                "cov07": {
+                    "type": "string"
+                },
+                "cov08": {
+                    "type": "string"
+                },
+                "cov09": {
+                    "type": "string"
+                },
+                "cov10": {
+                    "type": "string"
+                },
+                "cov11": {
+                    "type": "string"
+                },
+                "cov12": {
+                    "type": "string"
+                },
+                "cov13": {
+                    "type": "string"
+                },
+                "cov14": {
+                    "type": "string"
+                },
+                "cov15": {
+                    "type": "string"
+                },
+                "cov16": {
+                    "type": "string"
+                },
+                "cov17": {
+                    "type": "string"
+                },
+                "cov18": {
+                    "type": "string"
+                },
+                "cov19": {
+                    "type": "string"
+                },
+                "cov20": {
+                    "type": "string"
+                },
+                "eigval": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "element0": {
+                    "type": "string"
+                },
+                "element1": {
+                    "type": "string"
+                },
+                "element2": {
+                    "type": "string"
+                },
+                "element3": {
+                    "type": "string"
+                },
+                "element4": {
+                    "type": "string"
+                },
+                "element5": {
+                    "type": "string"
+                },
+                "epoch": {
+                    "type": "string"
+                },
+                "g": {
+                    "type": "string"
+                },
+                "h": {
+                    "type": "string"
+                },
+                "nongrav_model": {
+                    "type": "string"
+                },
+                "nongrav_params": {
+                    "type": "string"
+                },
+                "nongrav_type": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    ]
+                },
+                "nongrav_vals": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "nor00": {
+                    "type": "string"
+                },
+                "nor01": {
+                    "type": "string"
+                },
+                "nor02": {
+                    "type": "string"
+                },
+                "nor03": {
+                    "type": "string"
+                },
+                "nor04": {
+                    "type": "string"
+                },
+                "nor05": {
+                    "type": "string"
+                },
+                "nor06": {
+                    "type": "string"
+                },
+                "nor07": {
+                    "type": "string"
+                },
+                "nor08": {
+                    "type": "string"
+                },
+                "nor09": {
+                    "type": "string"
+                },
+                "nor10": {
+                    "type": "string"
+                },
+                "nor11": {
+                    "type": "string"
+                },
+                "nor12": {
+                    "type": "string"
+                },
+                "nor13": {
+                    "type": "string"
+                },
+                "nor14": {
+                    "type": "string"
+                },
+                "nor15": {
+                    "type": "string"
+                },
+                "nor16": {
+                    "type": "string"
+                },
+                "nor17": {
+                    "type": "string"
+                },
+                "nor18": {
+                    "type": "string"
+                },
+                "nor19": {
+                    "type": "string"
+                },
+                "nor20": {
+                    "type": "string"
+                },
+                "numparams": {
+                    "type": "string"
+                },
+                "rms": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "timesystem": {
+                    "type": "string"
+                },
+                "wea": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "cov22": {
+                    "type": "string"
+                },
+                "cov23": {
+                    "type": "string"
+                },
+                "cov24": {
+                    "type": "string"
+                },
+                "cov25": {
+                    "type": "string"
+                },
+                "cov33": {
+                    "type": "string"
+                },
+                "cov34": {
+                    "type": "string"
+                },
+                "cov35": {
+                    "type": "string"
+                },
+                "cov44": {
+                    "type": "string"
+                },
+                "cov45": {
+                    "type": "string"
+                },
+                "cov55": {
+                    "type": "string"
+                },
+                "nor22": {
+                    "type": "string"
+                },
+                "nor23": {
+                    "type": "string"
+                },
+                "nor24": {
+                    "type": "string"
+                },
+                "nor25": {
+                    "type": "string"
+                },
+                "nor33": {
+                    "type": "string"
+                },
+                "nor34": {
+                    "type": "string"
+                },
+                "nor35": {
+                    "type": "string"
+                },
+                "nor44": {
+                    "type": "string"
+                },
+                "nor45": {
+                    "type": "string"
+                },
+                "nor55": {
+                    "type": "string"
+                },
+                "cov26": {
+                    "type": "string"
+                },
+                "cov27": {
+                    "type": "string"
+                },
+                "cov36": {
+                    "type": "string"
+                },
+                "cov37": {
+                    "type": "string"
+                },
+                "cov46": {
+                    "type": "string"
+                },
+                "cov47": {
+                    "type": "string"
+                },
+                "cov56": {
+                    "type": "string"
+                },
+                "cov57": {
+                    "type": "string"
+                },
+                "cov66": {
+                    "type": "string"
+                },
+                "cov67": {
+                    "type": "string"
+                },
+                "cov77": {
+                    "type": "string"
+                },
+                "nor26": {
+                    "type": "string"
+                },
+                "nor27": {
+                    "type": "string"
+                },
+                "nor36": {
+                    "type": "string"
+                },
+                "nor37": {
+                    "type": "string"
+                },
+                "nor46": {
+                    "type": "string"
+                },
+                "nor47": {
+                    "type": "string"
+                },
+                "nor56": {
+                    "type": "string"
+                },
+                "nor57": {
+                    "type": "string"
+                },
+                "nor66": {
+                    "type": "string"
+                },
+                "nor67": {
+                    "type": "string"
+                },
+                "nor77": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "coordtype",
+                "cov00",
+                "cov01",
+                "cov02",
+                "cov03",
+                "cov04",
+                "cov05",
+                "cov11",
+                "cov12",
+                "cov13",
+                "cov14",
+                "cov15",
+                "eigval",
+                "element0",
+                "element1",
+                "element2",
+                "element3",
+                "element4",
+                "element5",
+                "epoch",
+                "g",
+                "h",
+                "nongrav_model",
+                "nongrav_params",
+                "nongrav_type",
+                "nongrav_vals",
+                "nor00",
+                "nor01",
+                "nor02",
+                "nor03",
+                "nor04",
+                "nor05",
+                "nor11",
+                "nor12",
+                "nor13",
+                "nor14",
+                "nor15",
+                "numparams",
+                "rms",
+                "timesystem",
+                "wea"
+            ]
+        },
+        "COM": {
+            "type": "object",
+            "properties": {
+                "coordtype": {
+                    "type": "string"
+                },
+                "cov00": {
+                    "type": "string"
+                },
+                "cov01": {
+                    "type": "string"
+                },
+                "cov02": {
+                    "type": "string"
+                },
+                "cov03": {
+                    "type": "string"
+                },
+                "cov04": {
+                    "type": "string"
+                },
+                "cov05": {
+                    "type": "string"
+                },
+                "cov06": {
+                    "type": "string"
+                },
+                "cov07": {
+                    "type": "string"
+                },
+                "cov08": {
+                    "type": "string"
+                },
+                "cov09": {
+                    "type": "string"
+                },
+                "cov10": {
+                    "type": "string"
+                },
+                "cov11": {
+                    "type": "string"
+                },
+                "cov12": {
+                    "type": "string"
+                },
+                "cov13": {
+                    "type": "string"
+                },
+                "cov14": {
+                    "type": "string"
+                },
+                "cov15": {
+                    "type": "string"
+                },
+                "cov16": {
+                    "type": "string"
+                },
+                "cov17": {
+                    "type": "string"
+                },
+                "cov18": {
+                    "type": "string"
+                },
+                "cov19": {
+                    "type": "string"
+                },
+                "cov20": {
+                    "type": "string"
+                },
+                "eigval": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "element0": {
+                    "type": "string"
+                },
+                "element1": {
+                    "type": "string"
+                },
+                "element2": {
+                    "type": "string"
+                },
+                "element3": {
+                    "type": "string"
+                },
+                "element4": {
+                    "type": "string"
+                },
+                "element5": {
+                    "type": "string"
+                },
+                "epoch": {
+                    "type": "string"
+                },
+                "g": {
+                    "type": "string"
+                },
+                "h": {
+                    "type": "string"
+                },
+                "nongrav_model": {
+                    "type": "string"
+                },
+                "nongrav_params": {
+                    "type": "string"
+                },
+                "nongrav_type": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    ]
+                },
+                "nongrav_vals": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "nor00": {
+                    "type": "string"
+                },
+                "nor01": {
+                    "type": "string"
+                },
+                "nor02": {
+                    "type": "string"
+                },
+                "nor03": {
+                    "type": "string"
+                },
+                "nor04": {
+                    "type": "string"
+                },
+                "nor05": {
+                    "type": "string"
+                },
+                "nor06": {
+                    "type": "string"
+                },
+                "nor07": {
+                    "type": "string"
+                },
+                "nor08": {
+                    "type": "string"
+                },
+                "nor09": {
+                    "type": "string"
+                },
+                "nor10": {
+                    "type": "string"
+                },
+                "nor11": {
+                    "type": "string"
+                },
+                "nor12": {
+                    "type": "string"
+                },
+                "nor13": {
+                    "type": "string"
+                },
+                "nor14": {
+                    "type": "string"
+                },
+                "nor15": {
+                    "type": "string"
+                },
+                "nor16": {
+                    "type": "string"
+                },
+                "nor17": {
+                    "type": "string"
+                },
+                "nor18": {
+                    "type": "string"
+                },
+                "nor19": {
+                    "type": "string"
+                },
+                "nor20": {
+                    "type": "string"
+                },
+                "numparams": {
+                    "type": "string"
+                },
+                "rms": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "timesystem": {
+                    "type": "string"
+                },
+                "wea": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "cov22": {
+                    "type": "string"
+                },
+                "cov23": {
+                    "type": "string"
+                },
+                "cov24": {
+                    "type": "string"
+                },
+                "cov25": {
+                    "type": "string"
+                },
+                "cov33": {
+                    "type": "string"
+                },
+                "cov34": {
+                    "type": "string"
+                },
+                "cov35": {
+                    "type": "string"
+                },
+                "cov44": {
+                    "type": "string"
+                },
+                "cov45": {
+                    "type": "string"
+                },
+                "cov55": {
+                    "type": "string"
+                },
+                "nor22": {
+                    "type": "string"
+                },
+                "nor23": {
+                    "type": "string"
+                },
+                "nor24": {
+                    "type": "string"
+                },
+                "nor25": {
+                    "type": "string"
+                },
+                "nor33": {
+                    "type": "string"
+                },
+                "nor34": {
+                    "type": "string"
+                },
+                "nor35": {
+                    "type": "string"
+                },
+                "nor44": {
+                    "type": "string"
+                },
+                "nor45": {
+                    "type": "string"
+                },
+                "nor55": {
+                    "type": "string"
+                },
+                "cov26": {
+                    "type": "string"
+                },
+                "cov27": {
+                    "type": "string"
+                },
+                "cov36": {
+                    "type": "string"
+                },
+                "cov37": {
+                    "type": "string"
+                },
+                "cov46": {
+                    "type": "string"
+                },
+                "cov47": {
+                    "type": "string"
+                },
+                "cov56": {
+                    "type": "string"
+                },
+                "cov57": {
+                    "type": "string"
+                },
+                "cov66": {
+                    "type": "string"
+                },
+                "cov67": {
+                    "type": "string"
+                },
+                "cov77": {
+                    "type": "string"
+                },
+                "nor26": {
+                    "type": "string"
+                },
+                "nor27": {
+                    "type": "string"
+                },
+                "nor36": {
+                    "type": "string"
+                },
+                "nor37": {
+                    "type": "string"
+                },
+                "nor46": {
+                    "type": "string"
+                },
+                "nor47": {
+                    "type": "string"
+                },
+                "nor56": {
+                    "type": "string"
+                },
+                "nor57": {
+                    "type": "string"
+                },
+                "nor66": {
+                    "type": "string"
+                },
+                "nor67": {
+                    "type": "string"
+                },
+                "nor77": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "coordtype",
+                "cov00",
+                "cov01",
+                "cov02",
+                "cov03",
+                "cov04",
+                "cov05",
+                "cov11",
+                "cov12",
+                "cov13",
+                "cov14",
+                "cov15",
+                "eigval",
+                "element0",
+                "element1",
+                "element2",
+                "element3",
+                "element4",
+                "element5",
+                "epoch",
+                "g",
+                "h",
+                "nongrav_model",
+                "nongrav_params",
+                "nongrav_type",
+                "nongrav_vals",
+                "nor00",
+                "nor01",
+                "nor02",
+                "nor03",
+                "nor04",
+                "nor05",
+                "nor11",
+                "nor12",
+                "nor13",
+                "nor14",
+                "nor15",
+                "numparams",
+                "rms",
+                "timesystem",
+                "wea"
+            ]
+        },
+        "COT": {
+            "type": "object",
+            "properties": {
+                "coordtype": {
+                    "type": "string"
+                },
+                "cov00": {
+                    "type": "string"
+                },
+                "cov01": {
+                    "type": "string"
+                },
+                "cov02": {
+                    "type": "string"
+                },
+                "cov03": {
+                    "type": "string"
+                },
+                "cov04": {
+                    "type": "string"
+                },
+                "cov05": {
+                    "type": "string"
+                },
+                "cov06": {
+                    "type": "string"
+                },
+                "cov07": {
+                    "type": "string"
+                },
+                "cov08": {
+                    "type": "string"
+                },
+                "cov09": {
+                    "type": "string"
+                },
+                "cov10": {
+                    "type": "string"
+                },
+                "cov11": {
+                    "type": "string"
+                },
+                "cov12": {
+                    "type": "string"
+                },
+                "cov13": {
+                    "type": "string"
+                },
+                "cov14": {
+                    "type": "string"
+                },
+                "cov15": {
+                    "type": "string"
+                },
+                "cov16": {
+                    "type": "string"
+                },
+                "cov17": {
+                    "type": "string"
+                },
+                "cov18": {
+                    "type": "string"
+                },
+                "cov19": {
+                    "type": "string"
+                },
+                "cov20": {
+                    "type": "string"
+                },
+                "eigval": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "element0": {
+                    "type": "string"
+                },
+                "element1": {
+                    "type": "string"
+                },
+                "element2": {
+                    "type": "string"
+                },
+                "element3": {
+                    "type": "string"
+                },
+                "element4": {
+                    "type": "string"
+                },
+                "element5": {
+                    "type": "string"
+                },
+                "epoch": {
+                    "type": "string"
+                },
+                "g": {
+                    "type": "string"
+                },
+                "h": {
+                    "type": "string"
+                },
+                "nongrav_model": {
+                    "type": "string"
+                },
+                "nongrav_params": {
+                    "type": "string"
+                },
+                "nongrav_type": {
+                    "type": [
+                        "array",
+                        "string"
+                    ]
+                },
+                "nongrav_vals": {
+                    "type": "array"
+                },
+                "nor00": {
+                    "type": "string"
+                },
+                "nor01": {
+                    "type": "string"
+                },
+                "nor02": {
+                    "type": "string"
+                },
+                "nor03": {
+                    "type": "string"
+                },
+                "nor04": {
+                    "type": "string"
+                },
+                "nor05": {
+                    "type": "string"
+                },
+                "nor06": {
+                    "type": "string"
+                },
+                "nor07": {
+                    "type": "string"
+                },
+                "nor08": {
+                    "type": "string"
+                },
+                "nor09": {
+                    "type": "string"
+                },
+                "nor10": {
+                    "type": "string"
+                },
+                "nor11": {
+                    "type": "string"
+                },
+                "nor12": {
+                    "type": "string"
+                },
+                "nor13": {
+                    "type": "string"
+                },
+                "nor14": {
+                    "type": "string"
+                },
+                "nor15": {
+                    "type": "string"
+                },
+                "nor16": {
+                    "type": "string"
+                },
+                "nor17": {
+                    "type": "string"
+                },
+                "nor18": {
+                    "type": "string"
+                },
+                "nor19": {
+                    "type": "string"
+                },
+                "nor20": {
+                    "type": "string"
+                },
+                "numparams": {
+                    "type": "string"
+                },
+                "rms": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "timesystem": {
+                    "type": "string"
+                },
+                "wea": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "cov22": {
+                    "type": "string"
+                },
+                "cov23": {
+                    "type": "string"
+                },
+                "cov24": {
+                    "type": "string"
+                },
+                "cov25": {
+                    "type": "string"
+                },
+                "cov33": {
+                    "type": "string"
+                },
+                "cov34": {
+                    "type": "string"
+                },
+                "cov35": {
+                    "type": "string"
+                },
+                "cov44": {
+                    "type": "string"
+                },
+                "cov45": {
+                    "type": "string"
+                },
+                "cov55": {
+                    "type": "string"
+                },
+                "nor22": {
+                    "type": "string"
+                },
+                "nor23": {
+                    "type": "string"
+                },
+                "nor24": {
+                    "type": "string"
+                },
+                "nor25": {
+                    "type": "string"
+                },
+                "nor33": {
+                    "type": "string"
+                },
+                "nor34": {
+                    "type": "string"
+                },
+                "nor35": {
+                    "type": "string"
+                },
+                "nor44": {
+                    "type": "string"
+                },
+                "nor45": {
+                    "type": "string"
+                },
+                "nor55": {
+                    "type": "string"
+                }
+            }
+        },
+        "EQU": {
+            "type": "object",
+            "properties": {
+                "coordtype": {
+                    "type": "string"
+                },
+                "cov00": {
+                    "type": "string"
+                },
+                "cov01": {
+                    "type": "string"
+                },
+                "cov02": {
+                    "type": "string"
+                },
+                "cov03": {
+                    "type": "string"
+                },
+                "cov04": {
+                    "type": "string"
+                },
+                "cov05": {
+                    "type": "string"
+                },
+                "cov06": {
+                    "type": "string"
+                },
+                "cov07": {
+                    "type": "string"
+                },
+                "cov08": {
+                    "type": "string"
+                },
+                "cov09": {
+                    "type": "string"
+                },
+                "cov10": {
+                    "type": "string"
+                },
+                "cov11": {
+                    "type": "string"
+                },
+                "cov12": {
+                    "type": "string"
+                },
+                "cov13": {
+                    "type": "string"
+                },
+                "cov14": {
+                    "type": "string"
+                },
+                "cov15": {
+                    "type": "string"
+                },
+                "cov16": {
+                    "type": "string"
+                },
+                "cov17": {
+                    "type": "string"
+                },
+                "cov18": {
+                    "type": "string"
+                },
+                "cov19": {
+                    "type": "string"
+                },
+                "cov20": {
+                    "type": "string"
+                },
+                "eigval": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "element0": {
+                    "type": "string"
+                },
+                "element1": {
+                    "type": "string"
+                },
+                "element2": {
+                    "type": "string"
+                },
+                "element3": {
+                    "type": "string"
+                },
+                "element4": {
+                    "type": "string"
+                },
+                "element5": {
+                    "type": "string"
+                },
+                "epoch": {
+                    "type": "string"
+                },
+                "g": {
+                    "type": "string"
+                },
+                "h": {
+                    "type": "string"
+                },
+                "nongrav_model": {
+                    "type": "string"
+                },
+                "nongrav_params": {
+                    "type": "string"
+                },
+                "nongrav_type": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    ]
+                },
+                "nongrav_vals": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "nor00": {
+                    "type": "string"
+                },
+                "nor01": {
+                    "type": "string"
+                },
+                "nor02": {
+                    "type": "string"
+                },
+                "nor03": {
+                    "type": "string"
+                },
+                "nor04": {
+                    "type": "string"
+                },
+                "nor05": {
+                    "type": "string"
+                },
+                "nor06": {
+                    "type": "string"
+                },
+                "nor07": {
+                    "type": "string"
+                },
+                "nor08": {
+                    "type": "string"
+                },
+                "nor09": {
+                    "type": "string"
+                },
+                "nor10": {
+                    "type": "string"
+                },
+                "nor11": {
+                    "type": "string"
+                },
+                "nor12": {
+                    "type": "string"
+                },
+                "nor13": {
+                    "type": "string"
+                },
+                "nor14": {
+                    "type": "string"
+                },
+                "nor15": {
+                    "type": "string"
+                },
+                "nor16": {
+                    "type": "string"
+                },
+                "nor17": {
+                    "type": "string"
+                },
+                "nor18": {
+                    "type": "string"
+                },
+                "nor19": {
+                    "type": "string"
+                },
+                "nor20": {
+                    "type": "string"
+                },
+                "numparams": {
+                    "type": "string"
+                },
+                "rms": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "timesystem": {
+                    "type": "string"
+                },
+                "wea": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "cov22": {
+                    "type": "string"
+                },
+                "cov23": {
+                    "type": "string"
+                },
+                "cov24": {
+                    "type": "string"
+                },
+                "cov25": {
+                    "type": "string"
+                },
+                "cov26": {
+                    "type": "string"
+                },
+                "cov27": {
+                    "type": "string"
+                },
+                "cov33": {
+                    "type": "string"
+                },
+                "cov34": {
+                    "type": "string"
+                },
+                "cov35": {
+                    "type": "string"
+                },
+                "cov36": {
+                    "type": "string"
+                },
+                "cov37": {
+                    "type": "string"
+                },
+                "cov44": {
+                    "type": "string"
+                },
+                "cov45": {
+                    "type": "string"
+                },
+                "cov46": {
+                    "type": "string"
+                },
+                "cov47": {
+                    "type": "string"
+                },
+                "cov55": {
+                    "type": "string"
+                },
+                "cov56": {
+                    "type": "string"
+                },
+                "cov57": {
+                    "type": "string"
+                },
+                "cov66": {
+                    "type": "string"
+                },
+                "cov67": {
+                    "type": "string"
+                },
+                "cov77": {
+                    "type": "string"
+                },
+                "nor22": {
+                    "type": "string"
+                },
+                "nor23": {
+                    "type": "string"
+                },
+                "nor24": {
+                    "type": "string"
+                },
+                "nor25": {
+                    "type": "string"
+                },
+                "nor26": {
+                    "type": "string"
+                },
+                "nor27": {
+                    "type": "string"
+                },
+                "nor33": {
+                    "type": "string"
+                },
+                "nor34": {
+                    "type": "string"
+                },
+                "nor35": {
+                    "type": "string"
+                },
+                "nor36": {
+                    "type": "string"
+                },
+                "nor37": {
+                    "type": "string"
+                },
+                "nor44": {
+                    "type": "string"
+                },
+                "nor45": {
+                    "type": "string"
+                },
+                "nor46": {
+                    "type": "string"
+                },
+                "nor47": {
+                    "type": "string"
+                },
+                "nor55": {
+                    "type": "string"
+                },
+                "nor56": {
+                    "type": "string"
+                },
+                "nor57": {
+                    "type": "string"
+                },
+                "nor66": {
+                    "type": "string"
+                },
+                "nor67": {
+                    "type": "string"
+                },
+                "nor77": {
+                    "type": "string"
+                }
+            }
+        },
+        "KEP": {
+            "type": "object",
+            "properties": {
+                "coordtype": {
+                    "type": "string"
+                },
+                "cov00": {
+                    "type": "string"
+                },
+                "cov01": {
+                    "type": "string"
+                },
+                "cov02": {
+                    "type": "string"
+                },
+                "cov03": {
+                    "type": "string"
+                },
+                "cov04": {
+                    "type": "string"
+                },
+                "cov05": {
+                    "type": "string"
+                },
+                "cov06": {
+                    "type": "string"
+                },
+                "cov07": {
+                    "type": "string"
+                },
+                "cov08": {
+                    "type": "string"
+                },
+                "cov09": {
+                    "type": "string"
+                },
+                "cov10": {
+                    "type": "string"
+                },
+                "cov11": {
+                    "type": "string"
+                },
+                "cov12": {
+                    "type": "string"
+                },
+                "cov13": {
+                    "type": "string"
+                },
+                "cov14": {
+                    "type": "string"
+                },
+                "cov15": {
+                    "type": "string"
+                },
+                "cov16": {
+                    "type": "string"
+                },
+                "cov17": {
+                    "type": "string"
+                },
+                "cov18": {
+                    "type": "string"
+                },
+                "cov19": {
+                    "type": "string"
+                },
+                "cov20": {
+                    "type": "string"
+                },
+                "eigval": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "element0": {
+                    "type": "string"
+                },
+                "element1": {
+                    "type": "string"
+                },
+                "element2": {
+                    "type": "string"
+                },
+                "element3": {
+                    "type": "string"
+                },
+                "element4": {
+                    "type": "string"
+                },
+                "element5": {
+                    "type": "string"
+                },
+                "epoch": {
+                    "type": "string"
+                },
+                "g": {
+                    "type": "string"
+                },
+                "h": {
+                    "type": "string"
+                },
+                "nongrav_model": {
+                    "type": "string"
+                },
+                "nongrav_params": {
+                    "type": "string"
+                },
+                "nongrav_type": {
+                    "anyOf": [
+                        {
+                            "type": "string"
+                        },
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    ]
+                },
+                "nongrav_vals": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "nor00": {
+                    "type": "string"
+                },
+                "nor01": {
+                    "type": "string"
+                },
+                "nor02": {
+                    "type": "string"
+                },
+                "nor03": {
+                    "type": "string"
+                },
+                "nor04": {
+                    "type": "string"
+                },
+                "nor05": {
+                    "type": "string"
+                },
+                "nor06": {
+                    "type": "string"
+                },
+                "nor07": {
+                    "type": "string"
+                },
+                "nor08": {
+                    "type": "string"
+                },
+                "nor09": {
+                    "type": "string"
+                },
+                "nor10": {
+                    "type": "string"
+                },
+                "nor11": {
+                    "type": "string"
+                },
+                "nor12": {
+                    "type": "string"
+                },
+                "nor13": {
+                    "type": "string"
+                },
+                "nor14": {
+                    "type": "string"
+                },
+                "nor15": {
+                    "type": "string"
+                },
+                "nor16": {
+                    "type": "string"
+                },
+                "nor17": {
+                    "type": "string"
+                },
+                "nor18": {
+                    "type": "string"
+                },
+                "nor19": {
+                    "type": "string"
+                },
+                "nor20": {
+                    "type": "string"
+                },
+                "numparams": {
+                    "type": "string"
+                },
+                "rms": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "timesystem": {
+                    "type": "string"
+                },
+                "wea": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "cov22": {
+                    "type": "string"
+                },
+                "cov23": {
+                    "type": "string"
+                },
+                "cov24": {
+                    "type": "string"
+                },
+                "cov25": {
+                    "type": "string"
+                },
+                "cov33": {
+                    "type": "string"
+                },
+                "cov34": {
+                    "type": "string"
+                },
+                "cov35": {
+                    "type": "string"
+                },
+                "cov44": {
+                    "type": "string"
+                },
+                "cov45": {
+                    "type": "string"
+                },
+                "cov55": {
+                    "type": "string"
+                },
+                "nor22": {
+                    "type": "string"
+                },
+                "nor23": {
+                    "type": "string"
+                },
+                "nor24": {
+                    "type": "string"
+                },
+                "nor25": {
+                    "type": "string"
+                },
+                "nor33": {
+                    "type": "string"
+                },
+                "nor34": {
+                    "type": "string"
+                },
+                "nor35": {
+                    "type": "string"
+                },
+                "nor44": {
+                    "type": "string"
+                },
+                "nor45": {
+                    "type": "string"
+                },
+                "nor55": {
+                    "type": "string"
+                },
+                "cov26": {
+                    "type": "string"
+                },
+                "cov27": {
+                    "type": "string"
+                },
+                "cov36": {
+                    "type": "string"
+                },
+                "cov37": {
+                    "type": "string"
+                },
+                "cov46": {
+                    "type": "string"
+                },
+                "cov47": {
+                    "type": "string"
+                },
+                "cov56": {
+                    "type": "string"
+                },
+                "cov57": {
+                    "type": "string"
+                },
+                "cov66": {
+                    "type": "string"
+                },
+                "cov67": {
+                    "type": "string"
+                },
+                "cov77": {
+                    "type": "string"
+                },
+                "nor26": {
+                    "type": "string"
+                },
+                "nor27": {
+                    "type": "string"
+                },
+                "nor36": {
+                    "type": "string"
+                },
+                "nor37": {
+                    "type": "string"
+                },
+                "nor46": {
+                    "type": "string"
+                },
+                "nor47": {
+                    "type": "string"
+                },
+                "nor56": {
+                    "type": "string"
+                },
+                "nor57": {
+                    "type": "string"
+                },
+                "nor66": {
+                    "type": "string"
+                },
+                "nor67": {
+                    "type": "string"
+                },
+                "nor77": {
+                    "type": "string"
+                }
+            }
+        },
+        "eph": {
+            "type": "string"
+        },
+        "format": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "rectype": {
+            "type": "string"
+        },
+        "refsys": {
+            "type": "string"
+        }
+    },
+    "required": [
+        "CAR",
+        "COM"
+    ]
+}
