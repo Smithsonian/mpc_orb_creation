@@ -98,7 +98,7 @@ def orbfit_results_query_demo():
     # - dict_keys(['id', 'packed_primary_provisional_designation', 'unpacked_primary_provisional_designation', 'rwo_json', 'standard_epoch_json', 'mid_epoch_json', 'quality_json', 'created_at', 'updated_at'])
     unpacked_primary_desig = '2020 AB1'
     result = db_query_orbits.QueryOrbfitResults().get_orbit_row( unpacked_primary_desig )
-    for k,v in result.items()
+    for k,v in result.items():
         print(k,":",v)
         
 if __name__ == "__main__":
