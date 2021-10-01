@@ -113,12 +113,17 @@ def schema_validation_demo_1():
     import db_query_orbits
     unpacked_primary_desig = '2020 AB1'
     result_dict = db_query_orbits.QueryOrbfitResults().get_orbit_row( unpacked_primary_desig )
-    
-    #
-    print('Attempting validation...')
+
     standard_epoch_dict = result_dict['standard_epoch_json']
+
+    # Attempt to stick the orbfit results dictionary through the validation routines
+    print('Attempting validation...')
+    
+    # We expect thefollowing 2 to pass ...
     schema.validate_orbfit_general(standard_epoch_dict , VERBOSE=True )
     schema.validate_orbfit_conversion(standard_epoch_dict , VERBOSE=True )
+    # We expect the following to fail
+    print('***WE EXPECT A FAILURE !!!***')
     schema.validate_mpcorb(standard_epoch_dict , VERBOSE=True )
 
 if __name__ == "__main__":
