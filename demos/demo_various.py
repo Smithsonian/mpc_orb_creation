@@ -153,7 +153,8 @@ def mpc_orb_convert_demo_1():
     
     # Convert to mpc_orb format
     mpcorb_format_dict = convert.std_format_els(standard_epoch_dict)
-
+    for k,v in mpcorb_format_dict.items():
+        print(k,":",v)
 
 
 if __name__ == "__main__":
