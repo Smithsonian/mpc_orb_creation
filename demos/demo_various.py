@@ -68,7 +68,7 @@ def bootstrap_demo():
             remove(filepath_dict[f])
             
     # Call the bootstap function
-    bootstrap.bootstap( VERBOSE=True )
+    bootstrap.bootstrap( VERBOSE=True )
     
     # Demonstrate that the files we deleted above have now been reconstructed
     for f in filepath_dict['mpcorb_defining_sample']:
