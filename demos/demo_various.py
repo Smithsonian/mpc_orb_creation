@@ -21,15 +21,61 @@ def filepath_demo():
         many important files and directories within the repo
         
         The filepaths.py file has a number of comments to describe what is in the various locations, but this filepath_demo() function simply highlights a few key areas '''
+    print('-------filepath_demo---------)
     
     # Import the convenience filepath-defn dictionary
     from filepaths import filepath_dict
     
-    # List of defining JSONs that represent generally valid fel-files
-    print( filepath_dict['orbfit_defining_sample_general'] )
+    # ---- (1) ---- List of defining JSONs that represent generally valid fel-files
+    print()
+    filelist= filepath_dict['orbfit_defining_sample_general']
+    assert len(filelist) >= 5 # We expect there to be many files ...
+    print(f'N_files in orbfit_defining_sample_general = ... {len(filelist)}')
+    for f in filelist : print(f)
+    
+    # ---- (2) ---- List of defining JSONs that represent valid fel-files that are good to convert to mpc_orb format
+    print()
+    filelist= filepath_dict['orbfit_defining_sample_convert']
+    assert len(filelist) >= 5 # We expect there to be many files ...
+    print(f'N_files in orbfit_defining_sample_convert = ... {len(filelist)}')
+    for f in filelist : print(f)
+    
+
+def bootstrap_demo():
+    '''
+    The bootstap.bootstrap() function does everything we need to take us from
+    an initial set of defining files, to having a full set of validation
+    schema files
+    
+    Here we demonstrate how to use it and what it does
+    '''
+    print('-------bootstrap_demo---------)
+    import bootstrap
+
+    
+    
+    # Explicitly delete any of the schema files and/or "numerical conversion" files ...
+    # that have previously been generated from the above defining samples
+    print('Removing previously generated files ... ')
+    for f in filepath_dict['mpcorb_defining_sample']:
+        if isfile(f) :
+            remove(f)
+    for f in ['orbfit_general_schema','orbfit_conversion_schema', 'mpcorb_schema']:
+        if isfile(filepath_dict[f]) :
+            remove(filepath_dict[f])
+            
+    # Call the bootstap function
+    bootstrap.bootstap( VERBOSE=True )
+    
+    # Demonstrate that the files we deleted above have now been reconstructed
+    for f in filepath_dict['mpcorb_defining_sample']:
+        assert isfile(f) , f'{f} does not exist'
+    for f in ['orbfit_general_schema','orbfit_conversion_schema', 'mpcorb_schema']:
+        assert isfile(filepath_dict[f]), f'{filepath_dict[f]} does not exist'
 
 
 
 
-if __name__ ==' __main__':
+if __name__ == "__main__":
     filepath_demo()
+    bootstrap_demo()

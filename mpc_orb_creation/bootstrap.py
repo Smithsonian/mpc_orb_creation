@@ -11,6 +11,7 @@ This module: MJP
 """
 
 # Import third-party packages
+# -----------------------
 import json
 from jsonschema import validate
 import genson
@@ -29,7 +30,7 @@ from filepaths import filepath_dict
 # Main functionality to bootstrap the creation of schema files
 # -----------------------
 
-def bootstrap():
+def bootstrap( VERBOSE=False ):
     """
     The function calls required to take us from ~nothing, to having fully specified schema
     
@@ -44,13 +45,15 @@ def bootstrap():
     
     # (1) Create "orbfit felfile" schema from defining sample(s)
     #     NB: This creates 2 kinds of schema file, (i) general and (ii) conversion-specific
-    schema.create_orbfit_felfile_schema_from_defining_sample_json()
+    schema.create_orbfit_felfile_schema_from_defining_sample_json( VERBOSE=VERBOSE )
 
 
     # (2) Convert "orbfit felfile" defining sample(s) to create defining "mpcorb" defining sample(s)
     for fp_in, fp_out in zip(   filepath_dict['orbfit_defining_sample_convert'],
                                 filepath_dict['mpcorb_defining_sample']) :
-        print(fp_in, ' :->', fp_out)
+                                
+        if VERBOSE:
+            print(f'Converting input-file {fp_in} to output-file {fp_out}')
 
         # Get the file contents
         orbfit_dict,input_filepath = interpret.interpret(fp_in)
