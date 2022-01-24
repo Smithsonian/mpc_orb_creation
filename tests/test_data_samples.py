@@ -21,7 +21,10 @@ import data_samples
 # Tests
 # -----------------------
 def test_get_samples_A():
-    cnx = data_samples.DBConnect().get_samples( 5 )
+    n_samples = 5
+    result = data_samples.DBConnect().get_samples( n_samples )
+    
+    assert len(result) == n_samples
     print(cnx)
 
 test_get_samples_A()

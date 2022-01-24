@@ -51,11 +51,8 @@ class DBConnect():
 
     def get_samples( self, n_samples , good=True):
         '''
-        '''
-        # Get connection to vmsops database
+        Get n_samples from the database
         
-        # Sql query against orbfit_results table
-        '''
         At the time of writing the db table looked like ...
         vmsops=# \d orbfit_results
                                                            Table "public.orbfit_results"
@@ -71,6 +68,8 @@ class DBConnect():
      created_at                               | timestamp without time zone |           |          | timezone('utc'::text, now())
      updated_at                               | timestamp without time zone |           |          | timezone('utc'::text, now())
         '''
+        
+        # Sql query against orbfit_results table
         sql_str = f"""
             SELECT
                 packed_primary_provisional_designation,
