@@ -19,7 +19,7 @@ import psycopg2
 
 # mpc imports
 # -----------------------
-import mpc_psql 
+import mpc_psql
 
 # local imports
 # -----------------------
@@ -43,7 +43,7 @@ class DBConnect():
         try:
             self.dbConn = mpc_sql.connect_to_vmsops(database=db_name,host=db_host)
             self.dbCur = self.dbConn.cursor()
-
+            print("self.dbConn=",self.dbConn)
         except (Exception, psycopg2.Error) as error :
             print ("Error while connecting to PostgreSQL", error)
             
