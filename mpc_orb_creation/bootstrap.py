@@ -1,6 +1,6 @@
 """
-mpc_orb/bootstrap.py
- - The function calls required to take us from ~nothing, to having fully specified schema for all file types
+mpc_orb_creation/bootstrap.py
+ - These are the operations required to go from ~nothing, to having fully specified schema for all file types
  - This is the means by which the schema are defined / created
  - Expected to be used rarely
  - Expected to only be used internally by the MPC

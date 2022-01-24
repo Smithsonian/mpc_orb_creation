@@ -1,12 +1,13 @@
 # mpc_orb_creation
 
-Code to create validation schema for orbfit-jsons and mpcorb-jsons
+Code to CREATE validation schema for orbfit-jsons and mpcorb-jsons
 
 This repo is intended for internal MPC usage. 
 
 It is likely to only work on specific MPC machines with specific internal libraries available (e.g. "marsden") 
 
-There is a partner repo, "...mpc_orb" that contains the code intended for public use (validating and parsing mpc_orb.json files)
+There is a partner repo, "mpc_orb" (http:...) that contains the code intended for public use (validating and parsing mpc_orb.json files)
+
 
 ## Repo Structure ...
 
@@ -20,7 +21,7 @@ All of the json files used through the repo, both for schema creation and for te
 The main code base
 
 ### tests
-Some tests. Very little implmented at present
+Some tests. Very little implemented at present
 
 
 
@@ -38,7 +39,8 @@ The code that performs these taskss can be found in "mpc_orb_creation/mpc_orb_cr
 
 (ii) Provide validation functions
 
- - It is expected that these validation functionalities will typically be used as part of the "parse" functions described in (iii) below. I.e. it is *not* expected that the end-user will directly access the validation functions themselves, but rather, the validation functions are called under-the-hood by the mpc_orb/parse.py routines. 
+ - It is expected that these validation functionalities will typically be used as part of the "parse" functions described in (iii) below. 
+ - I.e. it is *not* expected that the end-user will directly access the validation functions themselves, but rather, the validation functions are called under-the-hood by the mpc_orb/parse.py routines. 
 
  - The code that performs the validation can be found in mpc_orb_creation/mpc_orb_creation/schema.py
 

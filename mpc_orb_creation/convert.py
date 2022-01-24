@@ -1,15 +1,15 @@
 """
-mpc_orb/convert.py
+mpc_orb_creation/convert.py
  - The functions that are required to convert orbfit fel-files (in json format) to an mpc_orb.json
  - Expected to be used frequently to convert the output from orbfit
  - As written it requires modules that are likely to only be available on internal MPC machines
+ 
+*** Note added 2022-01-24: May need to add ability to ingest rwo files as part of creation *** 
 
 Author(s)
 This module: MJP
 Many contained functions: MPan
 """
-
-#!/usr/bin/env python3
 
 # Third party imports
 # -----------------------
@@ -75,6 +75,7 @@ def convert(orbfit_input , output_filepath = None ):
         save_to_file(standard_format_dict , output_filepath)
 
     return standard_format_dict
+
 
 def std_format_els(oldelsdict):
     """
@@ -319,6 +320,7 @@ def attempt_str_conversion(s):
         # If we are here, then s is non-numeric
         return s
     
+    # If we are here, then s is numeric, but we might have 's' ~ '1.0' or ~'1'
     try:
         # Using int's "feature" of barfing when presented with a float-string
         i = int(s)
