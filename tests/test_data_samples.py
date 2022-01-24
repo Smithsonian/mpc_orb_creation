@@ -26,6 +26,6 @@ def test_get_samples_A():
     
     assert len(result) == n_samples
     for n, sample in enumerate(result):
-        print(sample)
+        print("\n",n, sample)
 
 test_get_samples_A()
