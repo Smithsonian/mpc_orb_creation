@@ -482,3 +482,8 @@ def generate_magnitude_dictionary(coorddict):
 def generate_epoch_dictionary(coorddict):
     """ put epoch data into a dictionary """
     return { "timesystem" : coorddict["timesystem"] ,  "epoch" : coorddict["epoch"]  }
+
+def save_to_file(standard_format_dict , output_filepath):
+    """ """
+        with open(output_filepath, 'w') as f:
+              json.dump(standard_format_dict, f, indent=4)

@@ -97,7 +97,7 @@ def validate_mpcorb( arg , VERBOSE=False ):
         validate(instance=data, schema=load_json( filepath_dict['mpcorb_schema'] ))
         return True
     except:
-        return True
+        return False
 
 
 # Schema Creation functions
