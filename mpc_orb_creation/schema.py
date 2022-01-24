@@ -55,9 +55,11 @@ def validate_orbfit_general(arg, VERBOSE=False):
     
     # validate
     # NB # If no exception is raised by validate(), the instance is valid.
-    validate(instance=orbfit_dict, schema=load_json( filepath_dict['orbfit_general_schema'] ))
-
-    return True
+    try:
+        validate(instance=orbfit_dict, schema=load_json( filepath_dict['orbfit_general_schema'] ))
+        return True
+    except:
+        return False
 
 def validate_orbfit_conversion( arg , VERBOSE=False ):
     """
@@ -72,9 +74,11 @@ def validate_orbfit_conversion( arg , VERBOSE=False ):
 
     # validate
     # NB # If no exception is raised by validate(), the instance is valid.
-    validate(instance=data, schema=load_json( filepath_dict['orbfit_conversion_schema'] ))
-    
-    return True
+    try:
+        validate(instance=data, schema=load_json( filepath_dict['orbfit_conversion_schema'] ))
+        return True
+    except:
+        return False
 
 def validate_mpcorb( arg , VERBOSE=False ):
     """
@@ -89,9 +93,11 @@ def validate_mpcorb( arg , VERBOSE=False ):
 
     # validate
     # NB # If no exception is raised by validate(), the instance is valid.
-    validate(instance=data, schema=load_json( filepath_dict['mpcorb_schema'] ))
-    
-    return True
+    try:
+        validate(instance=data, schema=load_json( filepath_dict['mpcorb_schema'] ))
+        return True
+    except:
+        return True
 
 
 # Schema Creation functions

@@ -4,7 +4,7 @@ mpc_orb_creation/convert.py
  - Expected to be used frequently to convert the output from orbfit
  - As written it requires modules that are likely to only be available on internal MPC machines
  
-*** Note added 2022-01-24: May need to add ability to ingest rwo files as part of creation *** 
+*** Note added 2022-01-24: May need to add ability to ingest rwo files as part of creation ***
 
 Author(s)
 This module: MJP
@@ -60,14 +60,19 @@ def convert(orbfit_input , output_filepath = None ):
     orbfit_dict, input_filepath = interpret.interpret(orbfit_input)
 
     # check the input is valid
-    validate_orbfit_conversion(orbfit_dict)
+    if not validate_orbfit_conversion(orbfit_dict):
+        return False
 
     # do the conversion (this is the heart of the routine)
-    standard_format_dict = std_format_els(orbfit_dict)
-
+    try:
+        standard_format_dict = std_format_els(orbfit_dict)
+    except:
+        return False
+        
     # check the result is valid
-    validate_mpcorb(standard_format_dict)
-    
+    if not validate_mpcorb(standard_format_dict)
+        return False
+        
     # save to file (if required)
     if input_filepath is not None or output_filepath is not None:
         input_stem = input_filepath[:input_filepath.rfind(".json")]
