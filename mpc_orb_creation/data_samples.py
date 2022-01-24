@@ -80,7 +80,7 @@ class DBConnect():
             FROM
                 orbfit_results
             WHERE
-                quality_json->>'std_epoch' f{good_str} limit {n_samples}
+                quality_json->>'std_epoch' {good_str} limit {n_samples}
             ;
             """
             
