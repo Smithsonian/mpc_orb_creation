@@ -17,6 +17,10 @@ import json
 from os.path import join, dirname, abspath, isfile
 import psycopg2
 
+# mpc imports
+# -----------------------
+import mpc_psql 
+
 # local imports
 # -----------------------
 #import schema
