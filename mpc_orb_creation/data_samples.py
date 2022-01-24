@@ -49,7 +49,7 @@ class DBConnect():
             
 
 
-    def get_samples( n_samples , good=True):
+    def get_samples( self, n_samples , good=True):
         '''
         '''
         # Get connection to vmsops database

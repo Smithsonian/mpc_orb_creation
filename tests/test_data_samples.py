@@ -21,8 +21,7 @@ import data_samples
 # Tests
 # -----------------------
 def test_get_samples_A():
-    cnx = data_samples.DBConnect()
+    cnx = data_samples.DBConnect().get_samples( 5 )
     print(cnx)
-    #get_samples( 5 )
 
 test_get_samples_A()
