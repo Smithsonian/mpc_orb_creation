@@ -41,7 +41,7 @@ class DBConnect():
     def __init__(self, db_host='marsden.cfa.harvard.edu', db_user ='postgres', db_name='vmsops'):
 
         try:
-            self.dbConn = mpc_sql.connect_to_vmsops(database=db_name,host=db_host)
+            self.dbConn = mpc_psql.connect_to_vmsops(database=db_name,host=db_host)
             self.dbCur = self.dbConn.cursor()
             print("self.dbConn=",self.dbConn)
         except (Exception, psycopg2.Error) as error :
