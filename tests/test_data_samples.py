@@ -20,12 +20,16 @@ import data_samples
 
 # Tests
 # -----------------------
-def test_get_samples_A():
+def test_get_samples_A(good=True):
+
     n_samples = 5
     result = data_samples.DBConnect().get_samples( n_samples )
     
     assert len(result) == n_samples
     for n, sample in enumerate(result):
-        print("\n",n, sample)
+        assert isinstance( sample[0], str)  # packed_primary_provisional_designation
+        assert isinstance( sample[1], str)  # unpacked_primary_provisional_designation
+        assert isinstance( sample[2], dict) # standard_epoch_json
+        assert isinstance( sample[3], dict) # rwo_json
 
 test_get_samples_A()

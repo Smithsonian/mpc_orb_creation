@@ -70,6 +70,7 @@ class DBConnect():
         '''
         
         # Sql query against orbfit_results table
+        good_str = " ='ok' " if good else " !='ok' "
         sql_str = f"""
             SELECT
                 packed_primary_provisional_designation,
@@ -79,7 +80,7 @@ class DBConnect():
             FROM
                 orbfit_results
             WHERE
-                quality_json->>'std_epoch' = 'ok' limit {n_samples}
+                quality_json->>'std_epoch' f{good_str} limit {n_samples}
             ;
             """
             
