@@ -25,6 +25,6 @@ def test_get_samples_A():
     result = data_samples.DBConnect().get_samples( n_samples )
     
     assert len(result) == n_samples
-    print(cnx)
+    print(result)
 
 test_get_samples_A()
