@@ -24,7 +24,7 @@ try:
     import mpc_convert as mc
     import mpcdev_psql as mpc_psql
     
-    sys.path.append('/ssd/share/apps/orbit_utils')
+    sys.path.append('/sa/orbit_utils')
     import orbfit_to_dict as o2d
 except:
     raise Exception("This conversion routine is intended for internal MPC usage and requires modules that are likely to only be available on internal MPC machines")
