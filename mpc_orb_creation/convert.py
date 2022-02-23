@@ -31,8 +31,8 @@ except:
 
 # local imports
 # -----------------------
-import interpret
-from schema import validate_orbfit_conversion, validate_mpcorb
+from .  import interpret
+from .schema import validate_orbfit_conversion, validate_mpcorb
 
 # Main code to run routine
 # -----------------------
