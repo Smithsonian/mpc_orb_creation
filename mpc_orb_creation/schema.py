@@ -17,8 +17,8 @@ from os.path import join, dirname, abspath, isfile
 
 # local imports
 # -----------------------
-import interpret
-from filepaths import filepath_dict
+from . import interpret
+from .filepaths import filepath_dict
 
 
 # IO functions
