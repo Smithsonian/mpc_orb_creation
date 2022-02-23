@@ -70,7 +70,7 @@ def convert(orbfit_input , output_filepath = None ):
         return False
         
     # check the result is valid
-    if not validate_mpcorb(standard_format_dict)
+    if not validate_mpcorb(standard_format_dict):
         return False
         
     # save to file (if required)
@@ -485,5 +485,5 @@ def generate_epoch_dictionary(coorddict):
 
 def save_to_file(standard_format_dict , output_filepath):
     """ """
-        with open(output_filepath, 'w') as f:
-              json.dump(standard_format_dict, f, indent=4)
+    with open(output_filepath, 'w') as f:
+        json.dump(standard_format_dict, f, indent=4)
