@@ -80,6 +80,31 @@ def validate_orbfit_conversion( arg , VERBOSE=False ):
     except:
         return False
 
+def validate_orbfit_construction( orbfit_dict , VERBOSE=False ):
+    """
+    Test whether input is a valid example of an orbfit-output dictionary
+    that is suitable for conversion to mpcorb-format.
+    
+    This is intended as a replacement for the *validate_orbfit_conversion* code
+    above: this ...construction function now requires a dictionary-of-dictionaries
+    
+    Inputs:
+    -------
+    orbfit_dict: dictionary
+     - dictionary of dictionaries
+     
+    """
+    if VERBOSE:
+        print('-------schema.validate_orbfit_construction()---------')
+
+    # validate
+    # NB # If no exception is raised by validate(), the instance is valid.
+    try:
+        validate(instance=data, schema=load_json( filepath_dict['orbfit_construction_schema'] ))
+        return True
+    except:
+        return False
+
 def validate_mpcorb( arg , VERBOSE=False ):
     """
     Test whether json is a valid example of an mpcorb json

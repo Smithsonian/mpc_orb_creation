@@ -1,6 +1,6 @@
 """
 mpc_orb_creation/convert.py
- - The functions that are required to convert orbfit fel-files (in json format) to an mpc_orb.json
+ - The functions that are required to convert orbfit output (in json format) to an mpc_orb.json
  - Expected to be used frequently to convert the output from orbfit
  - As written it requires modules that are likely to only be available on internal MPC machines
  
@@ -32,13 +32,19 @@ except:
 # local imports
 # -----------------------
 from .  import interpret
-from .schema import validate_orbfit_conversion, validate_mpcorb
+from .schema import validate_orbfit_conversion, validate_mpcorb , validate_orbfit_construction
 
-# Main code to run routine
-# -----------------------
+# -------------------------------------------------------------------
+# Main code to run conversion/construction from orbfit-to-mpc_orb
+# -------------------------------------------------------------------
 def convert(orbfit_input , output_filepath = None ):
     """
     Convert direct-output orbfit elements dictionary to standard format for external consumption
+    
+    *** THIS IS THE ORIGINAL VERSION
+    *** PURE "CONVERSION" FROM eq0-to-mpc_orb.json
+    *** WILL BE REPLACED BY "CONSTRUCTION" BELOW
+    
     
     inputs:
     -------
@@ -81,7 +87,44 @@ def convert(orbfit_input , output_filepath = None ):
 
     return standard_format_dict
 
+def construct(orbfit_input , output_filepath = None ):
+    """
+    Convert direct-output orbfit elements dictionary to standard format for external consumption
+    
+    inputs:
+    -------
+    orbfit_input: dict
+     - valid convertible orbfit output dictionary
+     - requires multiple different sub-dictionaries, *NOT* just the eq0/eq1 file
+    
+    returns:
+    --------
+    standard_format_dict
+     - mpc_orb.json compatible
+    
+    optionally:
+    -----------
+    if an output filepath is supplied, then the output-dictionary will also be saved to file
+    
+    """
+    
+    # Check the input is valid
+    if not validate_orbfit_construction(orbfit_dict):
+        return False
 
+    try:
+        # Do the conversion (this is the heart of the routine)
+        standard_format_dict = std_format_els(orbfit_dict)
+        # Check the result is valid
+        return validate_mpcorb(standard_format_dict)
+    except:
+        return False
+        
+
+    
+# -------------------------------------------------------------------
+# Various Sub-Functions
+# -------------------------------------------------------------------
 def std_format_els(oldelsdict):
     """
     Convert direct-output orbfit elements dictionary to standard format for external consumption
