@@ -94,8 +94,6 @@
             "vz": 0.0
         },
         "non_grav_coefficients": {
-            "yarkovsky_coeff": null,
-            "srp_coeff": null,
             "A1_coeff": null,
             "A2_coeff": null,
             "A3_coeff": null,
@@ -197,8 +195,6 @@
             "peri_time": 0.0
         },
         "non_grav_coefficients": {
-            "yarkovsky_coeff": null,
-            "srp_coeff": null,
             "A1_coeff": null,
             "A2_coeff": null,
             "A3_coeff": null,
@@ -277,9 +273,9 @@
     "magnitude_data": {
         "H": 0.0,
         "G": 0.0,
-        "G1": 0.0,
-        "G2": 0.0,
-        "G12": 0.0,
+        "G1": null,
+        "G2": null,
+        "G12": null,
         "photometric_model": "????"
     },
     "epoch_data": {
@@ -288,18 +284,18 @@
         "epoch": 0.0
     },
     "moid_data": {
-        "Venus": 0.0,
-        "Earth": 0.0,
-        "Mars": 0.0,
-        "Jupiter": 0.0,
+        "Venus": null,
+        "Earth": null,
+        "Mars": null,
+        "Jupiter": null,
         "moid_units": "au"
     },
     "categorization": {
-        "object_type_str": "MBA",
-        "object_type_int": 0,
+        "object_type_str": "",
+        "object_type_int": null,
         "orbit_type_str": "",
-        "orbit_type_int": 0,
+        "orbit_type_int": null,
         "orbit_subtype_str": "",
-        "orbit_subtype_int": 0
+        "orbit_subtype_int": null
     }
 }

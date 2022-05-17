@@ -27,14 +27,17 @@ def test_save_template_dict_to_json():
 def test_template_import():
     ''' Test the template can be read as a json '''
     try:
-        schema_data = io.load_json( filepath_dict['mpcorb_template'] )
+        template_data = io.load_json( filepath_dict['mpcorb_template'] )
     except:
-        schema_data = {}
-    assert schema_data
-    print(schema_data)
+        template_data = {}
+    assert template_data
+    print(template_data)
     
 def test_template_validates():
-    ''' Test the template validates against the schema '''
+    '''
+        Test the template validates against the schema
+        NB: In order to get this to work, the schema has to allow "Null"/"None" values for a number of fields
+    '''
     # NB: If no exception is raised by validate(), the instance is valid.
     validate(   instance    =io.load_json( filepath_dict['mpcorb_template'] ),
                 schema      =io.load_json( filepath_dict['mpcorb_schema']   )
