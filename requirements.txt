@@ -1,0 +1,6 @@
+psycopg2-binary
+pytest
+pytest_postgresql
+pytest-skip-slow
+jsonschema
+genson
