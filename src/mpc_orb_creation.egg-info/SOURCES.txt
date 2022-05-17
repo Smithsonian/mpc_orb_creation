@@ -1,7 +1,0 @@
-README.md
-pyproject.toml
-setup.cfg
-src/mpc_orb_creation.egg-info/PKG-INFO
-src/mpc_orb_creation.egg-info/SOURCES.txt
-src/mpc_orb_creation.egg-info/dependency_links.txt
-src/mpc_orb_creation.egg-info/top_level.txt
