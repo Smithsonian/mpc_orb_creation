@@ -1,24 +1,19 @@
 {
     "$schema": "http://json-schema.org/schema#",
-    "type": "object",
     "title":"Best Fit Orbit Data for Single Solar System Object",
-    "description":"Standardized MPC JSON format for the exchange of orbit-fit data. Designed to communicate the best-fit orbit for a single minor planet or comet. The precursor to this schema was bootstrapped using a function *create_mpcorb_schema_from_defining_sample_json* function to create an initial working schema. Subsequent to that, extensive by-hand revisions have been made by MJP & FS. As such, this json should now be regarded as the defining schema, with 'bootstapping' no longer being required / allowed.",
+    "description":"Standardized JSON orbit exchange format. Designed to communicate the best-fit orbit for a single minor planet or comet. The precursor to this schema was bootstrapped using a function *create_mpcorb_schema_from_defining_sample_json* function to create an initial working schema. Subsequent to that, extensive by-hand revisions have been made by MJP & FS. As such, this json should now be regarded as the defining schema, with 'bootstapping' no longer being required / allowed.",
     "required": [
         "CAR",
         "COM",
+        "system_data",
         "designation_data",
         "orbit_fit_statistics",
-        "non_grav_data",
+        "nongrav_data",
         "magnitude_data",
-        "epoch_data",
-        "moid_data",
-        "categorization",
-        "software_data",
-        "system_data"
+        "epoch_data"
     ],
     "properties": {
         "CAR": {
-            "type": "object",
             "description" : "Cartesian Element Specification: Description of the best-fit orbit based on a cartesian coordinate system (plus any non-gravs). Contains the best-fit orbit and covariance matrix.",
             "properties": {
                 "element_units" : {
@@ -32,7 +27,7 @@
                         "vel": {
                             "type": "string",
                             "enum": ["au/day"]
-                        }
+                        },
                     },
                     "required": ["posn","vel"]
                 },
@@ -40,23 +35,30 @@
                     "description" : "Physical Units associated with non-gravitational fit-parameters ",
                     "type": "object",
                     "properties": {
+                        "yarkovsky": {
+                            "type": "string",
+                            "enum": ["???"]
+                        },
+                        "srp": {
+                            "type": "string",
+                            "enum": ["???"]
+                        },
                         "A1": {
                             "type": "string",
-                            "enum": ["au/day^2"]
+                            "enum": ["???"]
                         },
                         "A2": {
                             "type": "string",
-                            "enum": ["au/day^2"]
+                            "enum": ["???"]
                         },
                         "A3": {
                             "type": "string",
-                            "enum": ["au/day^2"]
+                            "enum": ["???"]
                         },
                         "DT": {
                             "type": "string",
-                            "enum": ["day"]
-                        }
-                    },
+                            "enum": ["???"]
+                        },                    },
                     "required": [   "yarkovsky",
                                     "srp",
                                     "A1",
@@ -69,18 +71,14 @@
                     "type": "array",
                     "items": {
                         "type": "number"
-                    },
-                    "minItems" : 6,
-                    "maxItems" : 10
+                    }
                 },
-                "rms": {
+                "rms": {  # We want this always to be of length 6: the non-gravs are separate
                     "description" : "RMS values for the cartesian orbital elements (and any non-gravitational parameters). Of length 6 if gravity-only, or 7-10 if we have non-gravs",
                     "type": "array",
                     "items": {
                         "type": "number"
-                    },
-                    "minItems" : 6,
-                    "maxItems" : 10
+                    }
                 },
                 "covariance": {
                     "description" : "Covariance matrix elements (upper triangular) for the cartesian orbital elements (and any non-gravitational parameters). Reconstructed square matrix is of size 6x6 if gravity-only, or 7x7 -to- 10x10 if we have non-grav parameters.",
@@ -105,16 +103,16 @@
                             "type": "number"
                         },
                         "cov06": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov07": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov08": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov09": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov11": {
                             "type": "number"
@@ -132,17 +130,18 @@
                             "type": "number"
                         },
                         "cov16": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov17": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov18": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov19": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
+
                         "cov22": {
                             "type": "number"
                         },
@@ -156,17 +155,18 @@
                             "type": "number"
                         },
                         "cov26": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov27": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov28": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov29": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
+                        
                         "cov33": {
                             "type": "number"
                         },
@@ -177,17 +177,18 @@
                             "type": "number"
                         },
                         "cov36": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov37": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov38": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov39": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
+                        
                         "cov44": {
                             "type": "number"
                         },
@@ -195,62 +196,64 @@
                             "type": "number"
                         },
                         "cov46": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov47": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov48": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov49": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
+                        
                         "cov55": {
                             "type": "number"
                         },
                         "cov56": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov57": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov58": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov59": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
+                        
                         "cov66": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov67": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov68": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov69": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov77": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov78": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov79": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov88": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov89": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov99": {
-                            "type": ["null", "number"]
-                        }
+                            "type": "number"
+                        },
                     },
                     "required": [
                         "cov00",
@@ -312,6 +315,18 @@
                     "description" : "Best fit values for any non-gravitational elements employed in the fit.",
                     "type": "object",
                     "properties": {
+                        "yarkovsky_coeff": {
+                            "type": [
+                                "null",
+                                "number"
+                            ]
+                        },
+                        "srp_coeff": {
+                            "type": [
+                                "null",
+                                "number"
+                            ]
+                        },
                         "A1_coeff": {
                             "type": [
                                 "null",
@@ -338,10 +353,12 @@
                         }
                     },
                     "required": [
+                        "yarkovsky_coeff"
+                        "srp_coeff",
                         "A1_coeff",
                         "A2_coeff",
                         "A3_coeff",
-                        "DT_coeff"
+                        "DT_coeff",
                     ]
                 }
             },
@@ -349,10 +366,10 @@
                 "eigval",
                 "rms",
                 "elements",
-                "non_grav_coefficients",
+                "non_grav_coefficients"
                 "covariance",
                 "element_units",
-                "non_grav_units"
+                "non_grav_units",
             ]
         },
         "COM": {
@@ -369,7 +386,7 @@
                         "ang": {
                             "type": "string",
                             "enum": ["deg"]
-                        }
+                        },
                     },
                     "required": ["posn","ang"]
                 },
@@ -377,6 +394,14 @@
                     "description" : "Physical Units associated with non-gravitational fit-parameters ",
                     "type": "object",
                     "properties": {
+                        "yarkovsky": {
+                            "type": "string",
+                            "enum": ["???"]
+                        },
+                        "srp": {
+                            "type": "string",
+                            "enum": ["???"]
+                        },
                         "A1": {
                             "type": "string",
                             "enum": ["???"]
@@ -392,8 +417,7 @@
                         "DT": {
                             "type": "string",
                             "enum": ["???"]
-                        }
-                    },
+                        },                    },
                     "required": [   "yarkovsky",
                                     "srp",
                                     "A1",
@@ -406,18 +430,14 @@
                     "type": "array",
                     "items": {
                         "type": "number"
-                    },
-                    "minItems" : 6,
-                    "maxItems" : 10
+                    }
                 },
                 "rms": {
                     "description" : "RMS values for the cartesian orbital elements (and any non-gravitational parameters). Of length 6 if gravity-only, or 7-10 if we have non-gravs",
                     "type": "array",
                     "items": {
                         "type": "number"
-                    },
-                    "minItems" : 6,
-                    "maxItems" : 10
+                    }
                 },
                 "covariance": {
                     "description" : "Covariance matrix elements (upper triangular) for the cartesian orbital elements (and any non-gravitational parameters). Reconstructed square matrix is of size 6x6 if gravity-only, or 7x7 -to- 10x10 if we have non-grav parameters.",
@@ -442,17 +462,19 @@
                             "type": "number"
                         },
                         "cov06": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov07": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov08": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov09": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
+
+                        
                         "cov11": {
                             "type": "number"
                         },
@@ -469,17 +491,18 @@
                             "type": "number"
                         },
                         "cov16": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov17": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov18": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov19": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
+
                         "cov22": {
                             "type": "number"
                         },
@@ -493,17 +516,18 @@
                             "type": "number"
                         },
                         "cov26": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov27": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov28": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov29": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
+                        
                         "cov33": {
                             "type": "number"
                         },
@@ -514,17 +538,18 @@
                             "type": "number"
                         },
                         "cov36": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov37": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov38": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov39": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
+                        
                         "cov44": {
                             "type": "number"
                         },
@@ -532,62 +557,64 @@
                             "type": "number"
                         },
                         "cov46": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov47": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov48": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov49": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
+                        
                         "cov55": {
                             "type": "number"
                         },
                         "cov56": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov57": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov58": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov59": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
+                        
                         "cov66": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov67": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov68": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov69": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov77": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov78": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov79": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov88": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov89": {
-                            "type": ["null", "number"]
+                            "type": "number"
                         },
                         "cov99": {
-                            "type": ["null", "number"]
-                        }
+                            "type": "number"
+                        },
                     },
                     "required": [
                         "cov00",
@@ -649,6 +676,18 @@
                     "description" : "Best fit values for any non-gravitational elements employed in the fit.",
                     "type": "object",
                     "properties": {
+                        "yarkovsky_coeff": {
+                            "type": [
+                                "null",
+                                "number"
+                            ]
+                        },
+                        "srp_coeff": {
+                            "type": [
+                                "null",
+                                "number"
+                            ]
+                        },
                         "A1_coeff": {
                             "type": [
                                 "null",
@@ -675,10 +714,12 @@
                         }
                     },
                     "required": [
+                        "yarkovsky_coeff"
+                        "srp_coeff",
                         "A1_coeff",
                         "A2_coeff",
                         "A3_coeff",
-                        "DT_coeff"
+                        "DT_coeff",
                     ]
                 }
             },
@@ -692,9 +733,60 @@
                 "non_grav_coefficients"
             ]
         },
-
+        "software_data" : {
+            "description" : "Details of the software used to perform orbital fit",
+            "properties": {
+                "software_name": {
+                    "type": "string",
+                    "enum": ["orbfit"]
+                },
+                "software_version": { # E.g. v.1.0.a.2
+                    "type": "string"
+                }
+                "run_datetime": { # When was this file made?
+                    "type": "string"
+                },
+            "required": [
+                "software_name",
+                "software_version",
+                "run_datetime"
+            ]
+        },
+        
+        "system_data": {
+            "description" : "Ephemeris model assumed when integrating the motion of the object, and the frame of reference used to specify the best-fit orbital elements. ",
+            "properties": {
+                "eph": {
+                    "description" : "The ephemeris model used in the orbit-fit, E.g. DE431",
+                    "type": "string",
+                    "enum": ["DE431","DE441"]
+                },
+                "refsys": {
+                    "description" : "The frame of reference for the best-fit orbital elements",
+                    "type": "string",
+                    "enum": ["Equatorial","Ecliptic"]
+                }
+                "refframe": {
+                    "description" : "The frame of reference for the best-fit orbital elements",
+                    "type": "string",
+                    "enum": ["ICRF"]
+                },
+                "force_model": {
+                    # ------------------------------------------
+                    # refframe Specification
+                    "description" : "The planetary / asteroidal perturbers that were used in the orbit-fit. [need to decide exactly how to popuulate: url-link?]",
+                    # ------------------------------------------
+                    "type": "string",
+                    "enum": ["????"]
+                },
+                "required": [
+                    "eph",
+                    "refsys",
+                    "refframe",
+                    "force_model"
+            ]
+        },
         "designation_data": {
-            "type": "object",
             "description" : "The designations, numbers and names that may be associated with the object",
             "properties": {
                 "permid": {
@@ -735,62 +827,7 @@
                 "unpacked_secondary_provisional_designations"
             ]
         },
-        "software_data" : {
-            "type": "object",
-            "description" : "Details of the software used to perform orbital fit",
-            "properties": {
-                "software_name": {
-                    "type": "string",
-                    "enum": ["orbfit"]
-                },
-                "software_version": {
-                    "type": "string"
-                },
-                "run_datetime": {
-                    "description":"# When was this file made?",
-                    "type": "string"
-                }
-            },
-            "required": [
-                "software_name",
-                "software_version",
-                "run_datetime"
-                ]
-        },
-        "system_data": {
-            "type": "object",
-            "description" : "Ephemeris model assumed when integrating the motion of the object, and the frame of reference used to specify the best-fit orbital elements. ",
-            "properties": {
-                "eph": {
-                    "description" : "The ephemeris model used in the orbit-fit, E.g. DE431",
-                    "type": "string",
-                    "enum": ["DE431","DE441"]
-                },
-                "refsys": {
-                    "description" : "The frame of reference for the best-fit orbital elements",
-                    "type": "string",
-                    "enum": ["Equatorial","Ecliptic"]
-                },
-                "refframe": {
-                    "description" : "The frame of reference for the best-fit orbital elements",
-                    "type": "string",
-                    "enum": ["ICRF"]
-                },
-                "force_model": {
-                    "description" : "The planetary / asteroidal perturbers that were used in the orbit-fit. [need to decide exactly how to popuulate: url-link?]",
-                    "type": "string",
-                    "enum": ["????"]
-                }
-            },
-            "required": [
-                "eph",
-                "refsys",
-                "refframe",
-                "force_model"
-            ]
-        },
         "orbit_fit_statistics":{
-            "type": "object",
              "description" : "Summary fit statistics associated with the best-fit orbit, the observations used, etc",
             "properties": {
                 "sig_to_noise_ratio" : {
@@ -798,8 +835,7 @@
                     "type": "array",
                     "items": {
                         "type": "number"
-                    }
-                },
+                    },
                 "snr_below_3"         : {
                     "description": "True if any value in the SNR list is <3, False otherwise",
                     "type": "boolean"
@@ -871,11 +907,11 @@
                 "numparams": {
                     "description": "Number of parameters used for fit: E.g. 6-orbital params plus N-non_grav params",
                     "type": "integer"
-                }
-            }
+                },
+
         },
-        "non_grav_data": {
-            "type": "object",
+
+        "nongrav_data": {
             "description" : "Booleans to indicate whether any non-gravitational parameters are used in the orbit-fit. The actual fitted values and their covariance properties are reported within the 'CAR' and 'COT' parameter sections.",
             "properties": {
                 "non_gravs": {
@@ -926,15 +962,15 @@
                         "A3",
                         "DT"
                     ]
-                }
+                },
+                
             },
             "required": [
                 "non_gravs",
-                "non_grav_booleans"
+                "non_grav_booleans",
             ]
         },
         "magnitude_data": {
-            "type": "object",
             "description" : "The absolute magnitude, H, and slope parameter, G, information derived from the fitted orbit in combination with the observed apparent magnitudes. ",
             "properties": {
                 "H": {
@@ -964,7 +1000,6 @@
                 ]
         },
         "epoch_data": {
-            "type": "object",
             "description" : "Data concerning the orbit epoch: I.e. The date at which the best-fit orbital coordinates are correct",
             "properties": {
                 "timesystem": {
@@ -984,35 +1019,33 @@
                 "timesystem",
                 "timeform"
             ]
-        },
+        }
         "moid_data": {
-            "type": "object",
             "description" : "Calculated MOIDs (Minimum Orbital Interception Distances) at Epoch",
             "properties": {
                 "Venus": {
-                    "type": ["null", "number"]
+                    "type": "number"
                 },
                 "Earth": {
                     "type": "number"
                 },
                 "Mars": {
-                    "type": ["null", "number"]
+                    "type": "number"
                 },
                 "Jupiter": {
-                    "type": ["null", "number"]
-                },
+                    "type": "number"
+                }
                 "moid_units" :{
                     "type": "string",
                     "enum": ["au"]
-                }
+                },
             },
             "required": [
                 "Earth",
                 "moid_units"
             ]
-        },
+        }
         "categorization": {
-            "type": "object",
             "description" : "Various different ways to categorize / sub-set orbit / object types",
             "properties": {
                 "object_type_str": {
@@ -1042,11 +1075,12 @@
                 "parent_planet_str" : {
                     "description": "# For Nat-Sats",
                     "type": "string"
-                },
+                }
                 "parent_planet_int" : {
                     "description": "# For Nat-Sats",
                     "type": "number"
                 }
+            }
             },
             "required": [
                 "object_type_str",
@@ -1057,5 +1091,4 @@
                 "orbit_subtype_int"
             ]
         }
-    }
-}
+    },

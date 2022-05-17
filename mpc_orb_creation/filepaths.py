@@ -24,6 +24,9 @@ def_cons_dir = join(json_dir, 'defining_sample_json/construct') # Dir. containin
 def_mpc_dir  = join(json_dir, 'defining_sample_json/mpcorb')    # Dir. containing defining JSONs that represent valid mpc_orb.json files
 sch_dir      = join(json_dir, 'schema_json')                    # Dir. containing validation schema JSON files that created from the above defining samples
 tj_dir       = join(json_dir, 'test_jsons')                     # Dir. containing JSONs that get used in unit-tests
+tem_dir      = join(json_dir, 'template_json')                  # Dir. containing template JSONs that get used in...
+
+
 
 
 # Files / File-Lists
@@ -53,7 +56,8 @@ filepath_dict = {
     'orbfit_conversion_schema'   : join(sch_dir, 'orbfit_conversion_schema.json'),   # The validation schema json created from the defining sample (for valid convertible fel-files)
     'orbfit_construction_schema' : join(sch_dir, 'orbfit_construction_schema.json'), # The validation schema json created from the defining sample...
                                                                                      #(for valid convertible orbfit-output consisting of a dictionary-of-dictionaries)
-    'mpcorb_schema'             : join(sch_dir, 'mpcorb_schema.json'),               # The validation schema json created from the defining sample (for valid mpcorb.json fel-files)
+    'mpcorb_schema'             : join(sch_dir, 'mpcorb_schema.json'),               # The validation schema json
+    'mpcorb_template'           : join(tem_dir, 'mpcorb_template.json'),             # A template mpc_orb json
 
     'test_fail_mpcorb'          : glob.glob( tj_dir + "/fail_mpcorb/*" ),
     'test_fail_orbfit_convert'  : glob.glob( tj_dir + "/fail_orbfit_convert/*" ),
