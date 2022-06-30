@@ -61,8 +61,8 @@ def construct(orbfit_input , output_filepath = None ):
     """
     
     try:
-        # Check the input is valid
-        assert validate_orbfit_construction(orbfit_dict):
+        # Test whether supplied input is a valid example of single, large orbfit-results dictionary containing a large variety of sub-dictionaries.
+        assert validate_orbfit_result(orbfit_dict):
 
         # Get the template dict/json
         mpcorb_template = template.get_template_json()
@@ -89,7 +89,7 @@ def populate(orbfit_dict, mpcorb_template):
     inputs:
     -------
     orbfit_dict: dict-of-dicts
-        - Expected Structure of inpiut orbfit data
+        - Expected Structure of input orbfit data
             'eq0dict'
             'eq1dict'
             'rwodict'
