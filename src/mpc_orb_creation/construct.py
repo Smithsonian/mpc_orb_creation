@@ -41,7 +41,7 @@ def construct(orbfit_input , output_filepath = None ):
     
     inputs:
     -------
-    orbfit_input: dict
+    orbfit_input: dict or string
      - valid convertible orbfit output dictionary
      - requires multiple different sub-dictionaries, *NOT* just the eq0/eq1 file
     
@@ -55,23 +55,23 @@ def construct(orbfit_input , output_filepath = None ):
     if an output filepath is supplied, then the output-dictionary will also be saved to file
     
     """
-    print(__file__)    
     if True:
         # interpret the input (allow dict or filepath)
         orbfit_dict, input_filepath = interpret.interpret(orbfit_input)
 
         # Check the input is valid
         #assert validate_orbfit_construction(orbfit_dict):
-
+        
         # Get the template dict/json
         mpcorb_template = template.get_template_json()
     
         # Populate the template from the orbfit_input
         # - This is the heart of the routine
-        mpcorb_populated = populate(orbfit_input, mpcorb_template)
+        mpcorb_populated = populate(orbfit_dict, mpcorb_template)
         
-        # Check the result is valid and return 
-        return mpcorb_populated if validate_mpcorb(mpcorb_populated) else {}  
+        # Check the result is valid and return
+        #assert validate_mpcorb(mpcorb_populated) 
+        return mpcorb_populated 
  
     else:#except Exception as e :
         print('Exception in ', __file__, '\n', e)
@@ -139,7 +139,7 @@ def populate(orbfit_dict, mpcorb_template):
     populate_designation_data(orbfit_dict, mpcorb_populated)
 
     # Populate orbit_fit_statistics
-    populate_orbit_fit_statistics()
+    populate_orbit_fit_statistics(orbfit_dict, mpcorb_populated)
 
     # Populate magnitude_data
     populate_magnitude_data(orbfit_dict['eq1dict'] , mpcorb_populated)
@@ -153,7 +153,7 @@ def populate(orbfit_dict, mpcorb_template):
     # Populate categorization
     populate_categorization(orbfit_dict, mpcorb_populated  )
 
-
+    return mpcorb_populated
 
 # ------------------------------------
 # Sub-Funcs to populate main sections
@@ -342,9 +342,9 @@ def populate_orbit_fit_statistics(orbfit_dict, mpcorb_populated):
     for key in ['sig_to_noise_ratio',
                 'snr_below_3',
                 'snr_below_1',
-                'U_param',
-                'score1',
-                'score2'
+                #'U_param',
+                #'score1',
+                #'score2'
                 ]:
         mpcorb_populated['orbit_fit_statistics'][key] = orbfit_dict['orbit_quality_metrics'][key]
         
@@ -353,13 +353,11 @@ def populate_orbit_fit_statistics(orbfit_dict, mpcorb_populated):
                 'normalized_RMS',
                 'not_normalized_RMS',
                 'nopp',
-                'score1',
-                'score2'
                 ]:
         mpcorb_populated['orbit_fit_statistics'][key] = orbfit_dict['stats_dict'][key]
 
     # Extract from elsewhere ...
-    mpcorb_populated['orbit_fit_statistics']['numparams'] = orbfit_dict['CAR']['numparams']
+    mpcorb_populated['orbit_fit_statistics']['numparams'] = orbfit_dict['eq1dict']['CAR']['numparams']
 
     # Quantities not yet populated ...
     '''
@@ -389,7 +387,7 @@ def populate_epoch_data(eq1dict , mpcorb_populated ):
     '''
     # NB: Data is replicated in "COM" & "CAR" : Just extract once
     mpcorb_populated["epoch_data"]["timesystem"]    = eq1dict["CAR"]["timesystem"]
-    mpcorb_populated["epoch_data"]["timeform"]      = eq1dict["CAR"]["MJD"]
+    mpcorb_populated["epoch_data"]["timeform"]      = "MJD" # eq1dict["CAR"]["MJD"]
     mpcorb_populated["epoch_data"]["epoch"]         = eq1dict["CAR"]["epoch"]
 
 
@@ -425,6 +423,8 @@ def to_nums(v):
         return (to_nums(_) for _ in v)
     elif isinstance(v, str):
         return attempt_str_conversion(v)
+    elif isinstance(v, (int, float, type(None))):
+        return v
     else:
         raise Exception(f"Unexpected type of variable in *to_nums* : {type(v)} ")
         return v
