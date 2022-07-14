@@ -19,7 +19,7 @@
     "properties": {
         "CAR": {
             "type": "object",
-            "description" : "Cartesian Element Specification: Description of the best-fit orbit based on a cartesian coordinate system (plus any non-gravs). Contains the best-fit orbit and covariance matrix.",
+            "description" : "Cartesian Element Specification: Description of the best-fit orbit based on a cartesian coordinate system (plus any non-gravs). Contains the best-fit orbit and covariance matrix. Heliocentric coordinates.",
             "properties": {
                 "element_units" : {
                     "description" : "Physical Units associated with cartesian orbital elements ",
@@ -313,24 +313,28 @@
                     "type": "object",
                     "properties": {
                         "A1_coeff": {
+                            "description" : "Best fit value for non-Gravitational Coefficient A1 ... ",
                             "type": [
                                 "null",
                                 "number"
                             ]
                         },
                         "A2_coeff": {
+                            "description" : "Best fit value for non-Gravitational Coefficient A2 ... ",
                             "type": [
                                 "null",
                                 "number"
                             ]
                         },
                         "A3_coeff": {
+                            "description" : "Best fit value for non-Gravitational Coefficient A3 ... ",
                             "type": [
                                 "null",
                                 "number"
                             ]
                         },
                         "DT_coeff": {
+                            "description" : "Best fit value for non-Gravitational Coefficient DT: Only used in yc (Yeomans & Chodas) model ",
                             "type": [
                                 "null",
                                 "number"
@@ -356,7 +360,7 @@
             ]
         },
         "COM": {
-            "description" : "Description of the best-fit orbit based on the 'cometary' coordinate system (plus any non-gravs). Contains the best-fit orbit and covariance matrix.",
+            "description" : "Description of the best-fit orbit based on the 'cometary' coordinate system (plus any non-gravs). Contains the best-fit orbit and covariance matrix. Heliocentric coordinates.",
             "properties": {
                 "element_units" : {
                     "description" : "Physical Units associated with cartesian orbital elements ",
@@ -379,24 +383,22 @@
                     "properties": {
                         "A1": {
                             "type": "string",
-                            "enum": ["???"]
+                            "enum": ["au/day^2"]
                         },
                         "A2": {
                             "type": "string",
-                            "enum": ["???"]
+                            "enum": ["au/day^2"]
                         },
                         "A3": {
                             "type": "string",
-                            "enum": ["???"]
+                            "enum": ["au/day^2"]
                         },
                         "DT": {
                             "type": "string",
-                            "enum": ["???"]
+                            "enum": ["day"]
                         }
                     },
-                    "required": [   "yarkovsky",
-                                    "srp",
-                                    "A1",
+                    "required": [   "A1",
                                     "A2",
                                     "A3",
                                     "DT"]
@@ -650,24 +652,28 @@
                     "type": "object",
                     "properties": {
                         "A1_coeff": {
+                            "description" : "Best fit value for non-Gravitational Coefficient A1 ... ",
                             "type": [
                                 "null",
                                 "number"
                             ]
                         },
                         "A2_coeff": {
+                            "description" : "Best fit value for non-Gravitational Coefficient A2 ... ",
                             "type": [
                                 "null",
                                 "number"
                             ]
                         },
                         "A3_coeff": {
+                            "description" : "Best fit value for non-Gravitational Coefficient A3 ... ",
                             "type": [
                                 "null",
                                 "number"
                             ]
                         },
                         "DT_coeff": {
+                            "description" : "Best fit value for non-Gravitational Coefficient DT: Only used in yc (Yeomans & Chodas) model ",
                             "type": [
                                 "null",
                                 "number"
@@ -766,10 +772,15 @@
                     "type": "string",
                     "enum": ["DE431","DE441"]
                 },
-                "refsys": {
-                    "description" : "The frame of reference for the best-fit orbital elements",
+                "refplane": {
+                    "description" : "The X-Y Reference Plane",
                     "type": "string",
                     "enum": ["Equatorial","Ecliptic"]
+                },
+                "EclipticObliquityArcseconds": {
+                    "description" : "Obliquity angle from JPL 777 (heliocentric IAU76/J2000 ecliptic)",
+                    "type": "string",
+                    "enum": ["84381.448"]
                 },
                 "refframe": {
                     "description" : "The frame of reference for the best-fit orbital elements",
@@ -777,7 +788,7 @@
                     "enum": ["ICRF"]
                 },
                 "force_model": {
-                    "description" : "The planetary / asteroidal perturbers that were used in the orbit-fit. [need to decide exactly how to popuulate: url-link?]",
+                    "description" : "The planetary / asteroidal perturbers that were used in the orbit-fit. [need to decide exactly how to populate: url-link?]",
                     "type": "string",
                     "enum": ["????"]
                 }
@@ -785,6 +796,7 @@
             "required": [
                 "eph",
                 "refsys",
+                "EclipticObliquityArcseconds",
                 "refframe",
                 "force_model"
             ]
@@ -813,11 +825,11 @@
                     "type": "number"
                 },
                 "score1"              : {
-                    "description": " 1st Meaningless score for numbering ...",
+                    "description": " 1st score for numbering ...",
                     "type": "number"
                 },
                 "score2"              : {
-                    "description": " 2nd Meaningless score for numbering ...",
+                    "description": " 2nd score for numbering ...",
                     "type": "number"
                 },
                 "orbit_quality"      : {
@@ -883,35 +895,43 @@
                     "type": "boolean"
                 },
                 "non_grav_booleans": {
-                    "description" : "Booleans to indicate which specific non-gravitational parameters are used in the orbit-fit.",
+                    "description" : "Booleans to indicate which specific non-gravitational model and non-gravitational parameters are used in the orbit-fit.",
                     "type": "object",
                     "properties": {
                         "yarkovsky": {
+                            "description" : "Yarkovsky model (https://www.sciencedirect.com/science/article/pii/S0019103513000456) boolean ",
                             "type": "boolean"
                         },
                         "srp": {
+                            "description" : "Solar Radiation Pressure model () boolean ",
                             "type": "boolean"
                         },
                         "marsden": {
+                            "description" : "Marsden model () boolean ",
                             "type": "boolean"
                         },
                         "yc": {
-                            "description":"Yoemans & Chodas",
+                            "description":"Yeomans & Chodas model () boolean",
                             "type": "boolean"
                         },
                         "yabushita": {
+                            "description" : "Yabushita model (https://www.sciencedirect.com/science/article/pii/S0019103513000456) boolean ",
                             "type": "boolean"
                         },
                         "A1": {
+                            "description" : "Non-Gravitational Coefficient A1 boolean ",
                             "type": "boolean"
                         },
                         "A2": {
+                            "description" : "Non-Gravitational Coefficient A2 boolean ",
                             "type": "boolean"
                         },
                         "A3": {
+                            "description" : "Non-Gravitational Coefficient A3 boolean ",
                             "type": "boolean"
                         },
                         "DT": {
+                            "description" : "Non-Gravitational Coefficient DT boolean: Only used in yc (Yeomans & Chodas) model ",
                             "type": "boolean"
                         }
                     },

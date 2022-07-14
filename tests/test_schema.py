@@ -14,9 +14,9 @@ def test_schema_import():
     assert schema_data
     
     
-def test_validate_mpcorb():
+def test_validate_mpcorb_A():
     '''
-        Test the template validates against the schema
+        Test the template (empty) mpcorb validates against the schema
         NB(1): In order to get this to work, the schema has to allow "Null"/"None"
                 values for a number of fields
         NB(2): This test essentially assumes that "test_template.test_template_validates()" passes
@@ -31,3 +31,17 @@ def test_validate_mpcorb():
     # - This works because the *validate_mpcorb* func will also try to load a
     #   json from a supplied string (i.e. assumes it's a filepath)
     assert schema.validate_mpcorb(template_data)
+
+def test_validate_mpcorb_B():
+    '''
+        Test a sample mpcorb file validates against the schema
+    '''
+    assert False
+
+
+def test_validate_orbfit_result_A():
+    '''
+        ...
+    '''
+    assert False
+    

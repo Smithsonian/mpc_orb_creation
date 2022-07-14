@@ -5,8 +5,6 @@
             "vel": "au/day"
         },
         "non_grav_units": {
-            "yarkovsky": "???",
-            "srp": "???",
             "A1": "au/day^2",
             "A2": "au/day^2",
             "A3": "au/day^2",
@@ -106,12 +104,10 @@
             "ang": "deg"
         },
         "non_grav_units": {
-            "yarkovsky": "???",
-            "srp": "???",
-            "A1": "???",
-            "A2": "???",
-            "A3": "???",
-            "DT": "???"
+            "A1": "au/day^2",
+            "A2": "au/day^2",
+            "A3": "au/day^2",
+            "DT": "day"
         },
         "eigval": [
             0.0,
@@ -208,7 +204,8 @@
     },
     "system_data": {
         "eph": "DE431",
-        "refsys": "Ecliptic",
+        "refplane": "Ecliptic",
+        "EclipticObliquityArcseconds": "84381.448",
         "refframe": "ICRF",
         "force_model": "????"
     },
