@@ -23,9 +23,6 @@ import mpc_psql
 
 # local imports
 # -----------------------
-#import schema
-#import convert
-#import interpret
 from filepaths import filepath_dict
 
 

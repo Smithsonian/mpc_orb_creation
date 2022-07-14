@@ -22,7 +22,7 @@ from os.path import join, dirname, abspath, isfile
 # local imports
 # -----------------------
 import schema
-import convert
+import construct
 import interpret
 from filepaths import filepath_dict
 

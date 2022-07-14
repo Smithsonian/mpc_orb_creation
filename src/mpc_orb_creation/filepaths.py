@@ -10,18 +10,19 @@ import os
 
 # Directories
 # -----------------------
-pack_dir  = dirname(dirname(abspath(__file__))) # Package directory
+pack_dir  = dirname(dirname(dirname(abspath(__file__))))    # Package directory
 
-json_dir  = join(pack_dir, 'json_files')        # All of the json-files
-code_dir  = join(pack_dir, 'mpc_orb')           # All of the packages python code
-test_dir  = join(pack_dir, 'tests')             # All of the test code
-demo_dir  = join(pack_dir, 'demos')             # Some demos/examples
+json_dir  = join(pack_dir, 'json_files')           # All of the json-files
+code_dir  = join(pack_dir, 'src/mpc_orb_creation') # All of the packaged python code
+test_dir  = join(pack_dir, 'tests')                # All of the test code
+demo_dir  = join(pack_dir, 'demos')                # Some demos/examples
 
 def_gen_dir  = join(json_dir, 'defining_sample_json/general')   # Dir. containing defining JSONs that represent generally valid fel-files
 def_con_dir  = join(json_dir, 'defining_sample_json/convert')   # Dir. containing defining JSONs that represent valid fel-files that are good to convert to mpc_orb format
 def_cons_dir = join(json_dir, 'defining_sample_json/construct') # Dir. containing defining JSONs that represent valid orbfit output dictionaries
                                                                 # (containing multiple sub-dictionaries) that are good to convert to mpc_orb format
 def_mpc_dir  = join(json_dir, 'defining_sample_json/mpcorb')    # Dir. containing defining JSONs that represent valid mpc_orb.json files
+
 sch_dir      = join(json_dir, 'schema_json')                    # Dir. containing validation schema JSON files that created from the above defining samples
 tj_dir       = join(json_dir, 'test_jsons')                     # Dir. containing JSONs that get used in unit-tests
 tem_dir      = join(json_dir, 'template_json')                  # Dir. containing template JSONs that get used in...
@@ -67,7 +68,5 @@ filepath_dict = {
     'test_pass_orbfit_convert'  : glob.glob( tj_dir + "/pass_orbfit_convert/*" ),
     'test_pass_orbfit_construct': glob.glob( tj_dir + "/pass_orbfit_construct/*" ),
     'test_pass_orbfit_general'  : glob.glob( tj_dir + "/pass_orbfit_general/*" ),
-
+    'test_pass_orbfit_standard' : glob.glob( tj_dir + "/pass_orbfit_standard/*" ), # Example(s) of new "standard" orbfit output dict 
 }
-
-

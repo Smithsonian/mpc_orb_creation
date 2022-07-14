@@ -35,6 +35,13 @@ def load_json( json_filepath ):
 
 # Validation functions
 # -----------------------
+def validate_orbfit_standardized(arg, VERBOSE=False):
+    '''
+    Test whether json is a valid example of a "standardized" orbfit output dictionary
+    E.g. As expected to be created using ... 
+    '''
+    return True 
+
 def validate_orbfit_general(arg, VERBOSE=False):
     """
     Test whether json is a valid example of an orbfit-felfile json

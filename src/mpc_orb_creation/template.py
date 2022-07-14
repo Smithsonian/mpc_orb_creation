@@ -11,6 +11,8 @@ defining sample.
 This template code simply returns a template dict/JSON that conforms to
 the defining schema.
 '''
+# standard imports 
+import sys, os 
 
 # local imports
 from mpc_orb_creation import io
