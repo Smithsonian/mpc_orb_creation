@@ -4,3 +4,4 @@ pytest_postgresql
 pytest-skip-slow
 jsonschema
 genson
+numpy
