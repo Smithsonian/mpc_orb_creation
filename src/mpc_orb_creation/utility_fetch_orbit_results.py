@@ -4,8 +4,7 @@ import psycopg2
 import psycopg2.extras
 
 #Import local
-import mpc_astro as ma
-import mpc_psql
+sys.path.append('/sa/python_libs'); import mpc_psql
 
 # -----------------------------------------------------------------------------
 #Various convenience functions for extracting results from orbfit_results table 
@@ -57,18 +56,17 @@ def query_desig( unpacked = None, packed = None):
 
 
 def get_dictionaries(unpacked = None, packed = None):
-  ''' gets the 3 main dictionaries ... rwo_dict , mid_epoch_dict,  standard_epoch_dict ... from the db''' 
+  ''' gets the 3 main dictionaries ... rwo_dict , mid_epoch_dict,  standard_epoch_dict ... from the db
+      also returns the updated_at field (useful for ensuring nothing has changed!!) 
+  ''' 
   row = query_desig( unpacked = unpacked , packed = packed)
   if row: 
-    return row['rwo_json'] , row['mid_epoch_json'], row['standard_epoch_json']
+    return row['rwo_json'] , row['mid_epoch_json'], row['standard_epoch_json'] , row['updated_at']
   else:
     return {}, {}, {} 
 
 def test_get_dictionaries(unpacked = None, packed = None):
   rwo_dict , mid_epoch_dict,  standard_epoch_dict = get_dictionaries( unpacked = unpacked , packed = packed)
-  print('rwo_dict...\n',            rwo_dict, '\n')
-  print('mid_epoch_dict...\n',      mid_epoch_dict, '\n')
-  print('standard_epoch_dict...\n', standard_epoch_dict, '\n')
 
 
 if __name__ == '__main__':
