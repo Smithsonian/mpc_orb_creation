@@ -1,0 +1,49 @@
+ Ephemerides used is JPLDE431
+ Number of perturbers is           17
+ Binary ephemerides file for the massive asteroids is /share/apps/god_fit/ast_files/AST17
+ ngr_opt is  F
+ first arc asteroid name is 2000NB21
+ not a designation is  T
+ second arc asteroid name default value 
+ error model file is gaiaDR2_mix
+  Gaia observations: long term, short term or Francois file is LT
+  Gaia data release: dr2 or dr3 is dr3
+  Uniform weights, to be used only for the ST is  F
+  80-col format of Gaia observations is  F
+ Forcing re-scaling is  F
+ Maximum number of observations is          100
+ Rescaling factor is            3
+ compute a grid for the level curves in case of cobweb is  F
+ number of rho values at first iteration is           50
+ number of rho_dot values at first iteration is           50
+ number of rho values at second iteration (also for cobweb) is          100
+ number of rho_dot values at second iteration (also for cobwe is          100
+ sigma max for cobweb is    5.0000000000000000     
+ max absolute magnitude is    34.500000000000000     
+ propag geocentric orbits is  F
+ propagation time for DU456/459 test default value    0.0000000000000000     
+ propagation time for DU456 test default value    0.0000000000000000     
+ use b-plane as target plane default value  T
+ mass given in a separate file default value  F
+ limit eccentricity is    4.9900000000000002     
+ max semimajor axis is    2000.0000000000000     
+ min semimajor axis default value    0.0000000000000000     
+ max aphelion is    6000.0000000000000     
+ min perihelion default value    0.0000000000000000     
+ max perihelion default value    0.0000000000000000     
+ shrink of Earth cross section default value    1.0000000000000000     
+ use of constant steps in IP is  F
+ max dist. for inclolinctp is   0.20000000000000001     
+ multiple solution generation using dovar is  F
+  INPUT OF OBSERVATIONAL DATA, ARC 1
+ first object obs. file name default value 2000NB21
+ first object obs. directory name is opp_res
+ input_obs:          858  obs from opp_res/2000NB21.rwo
+  INPUT OF OBSERVATIONAL DATA, ARC 2
+ second object obs. file name default value 
+  INPUT OF ORBITAL ELEMENTS, ARC 1
+ first arc asteroid name default value 2000NB21
+ first arc elements file is 2000NB21.elements
+ input orbit file correctly read
+ EQU   2.6681596720149852       -4.2492802958633002E-002  0.18662985599567800       0.11635691302028300       -9.8423683072827006E-002  0.53725989864543500        60000.000000000000        9.9999999999999997E+098 F T   15.429000000000000       0.14999999999999999                0         500
+  INPUT OF ORBITAL ELEMENTS, ARC 2

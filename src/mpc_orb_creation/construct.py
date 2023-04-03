@@ -11,31 +11,43 @@ This module: MJP
 Many contained functions: MPan
 """
 
-# Third party imports
+# Standard imports
 # -----------------------
 import copy
 import json
 import sys, os
+import requests 
+from datetime import datetime
+
+# Public-MPC Import!!!
+# -----------------------
+import mpc_orb
 
 # MPC module imports
 # -----------------------
+from designation_identifier import identifier
+from db_client import DatabaseClient
 try:
     sys.path.append('/sa/python_libs')
     import orbfit_to_dict as o2d
+    import mpc_astro as ma
+
 except:
     raise Exception("This conversion routine is intended for internal MPC usage and requires modules that are likely to only be available on internal MPC machines")
+
+
 
 # local imports
 # -----------------------
 from .  import interpret
-from .schema import validate_orbfit_standardized , validate_mpcorb # , validate_orbfit_conversion , validate_orbfit_construction
+#from .schema import validate_orbfit_standardized , validate_mpcorb # , validate_orbfit_conversion , validate_orbfit_construction
 from .  import template
 
 # -------------------------------------------------------------------
 # Main code to run conversion/construction from orbfit-to-mpc_orb
 # -------------------------------------------------------------------
 
-def construct(orbfit_input , output_filepath = None ):
+def construct(eq0dict,eq1dict,rwodict,moidsdict,otherdict , output_filepath = None , VERBOSE=True):
     """
     Convert direct-output orbfit elements dictionary to standard format for external consumption
     
@@ -55,25 +67,33 @@ def construct(orbfit_input , output_filepath = None ):
     if an output filepath is supplied, then the output-dictionary will also be saved to file
     
     """
-    if True:
-        # interpret the input (allow dict or filepath)
-        orbfit_dict, input_filepath = interpret.interpret(orbfit_input)
+    if VERBOSE: 
+      print(f"Running {__file__}.construct(...)", flush=True)
 
-        # Check the input is valid
-        #assert validate_orbfit_construction(orbfit_dict):
+    try :
         
         # Get the template dict/json
         mpcorb_template = template.get_template_json()
-    
+   
+        # DEVELOPING: Check that the template is itself valid
+        # assert mpc_orb.validate_mpcorb.validate_mpcorb(mpcorb_template)
+
+ 
         # Populate the template from the orbfit_input
         # - This is the heart of the routine
-        mpcorb_populated = populate(orbfit_dict, mpcorb_template)
+        try:
+          mpcorb_populated = populate(eq0dict,eq1dict,rwodict,moidsdict,otherdict , mpcorb_template)
+        except Exception as e : 
+          print(f'Exception in *populate*: \n {e}')
         
         # Check the result is valid and return
-        #assert validate_mpcorb(mpcorb_populated) 
+        assert mpc_orb.validate_mpcorb.validate_mpcorb(mpcorb_populated) 
+
+        if VERBOSE:
+          print(f"Completed {__file__}.construct(...)", flush=True)
         return mpcorb_populated 
  
-    else:#except Exception as e :
+    except Exception as e :
         print('Exception in ', __file__, '\n', e)
         return {}
         
@@ -81,7 +101,7 @@ def construct(orbfit_input , output_filepath = None ):
 # -------------------------------------------------------------------
 # Function to populate mpcorb_dict from orbfit_dict(s)
 # -------------------------------------------------------------------
-def populate(orbfit_dict, mpcorb_template):
+def populate(eq0dict,eq1dict,rwodict,moidsdict,otherdict , mpcorb_template):
     """
     Function to populate mpcorb_dict from orbfit_dict(s)
     Replaces *std_format_els* function
@@ -119,39 +139,43 @@ def populate(orbfit_dict, mpcorb_template):
     """
     # Copy the structure and the default content
     mpcorb_populated = copy.deepcopy(mpcorb_template)
-    
+
     # Recursively turn dict values into numbers (where possible)
-    orbfit_dict = to_nums(orbfit_dict)
+    eq0dict= to_nums(eq0dict)
+    eq1dict= to_nums(eq1dict)
+    rwodict= to_nums(rwodict)
+    moidsdict= to_nums(moidsdict)
+    otherdict= to_nums(otherdict)
+
 
     # Populate best-fit orbit data (CAR & COM components)
-    populate_CAR_COM(orbfit_dict['eq1dict'], mpcorb_populated)
-    
-    # Populate non-grav data
-    populate_nongravs(orbfit_dict['eq1dict'], mpcorb_populated)
+    # - non-grav data is now populated within this call ...
+    populate_CAR_COM( eq1dict, mpcorb_populated)
 
     # Populate software data
-    populate_software_data(orbfit_dict, mpcorb_populated)
+    populate_software_data(otherdict, mpcorb_populated)
 
     # Populate system data
-    populate_system_data(orbfit_dict, mpcorb_populated)
+    populate_system_data(otherdict, mpcorb_populated)
 
     # Populate designation_data
-    populate_designation_data(orbfit_dict, mpcorb_populated)
+    # - categorization:object_type also done here
+    populate_designation_data(rwodict, mpcorb_populated)
 
     # Populate orbit_fit_statistics
-    populate_orbit_fit_statistics(orbfit_dict, mpcorb_populated)
+    populate_orbit_fit_statistics(eq0dict,eq1dict,rwodict,otherdict, mpcorb_populated)
 
     # Populate magnitude_data
-    populate_magnitude_data(orbfit_dict['eq1dict'] , mpcorb_populated)
+    populate_magnitude_data(eq1dict , mpcorb_populated)
 
     # Populate epoch_data
-    populate_epoch_data(orbfit_dict['eq1dict'] , mpcorb_populated)
+    populate_epoch_data(eq1dict , mpcorb_populated)
 
     # Populate moid_data
-    populate_moid_data(orbfit_dict, mpcorb_populated  )
+    populate_moid_data(moidsdict, mpcorb_populated  )
 
     # Populate categorization
-    populate_categorization(orbfit_dict, mpcorb_populated  )
+    populate_categorization(otherdict, mpcorb_populated  )
 
     return mpcorb_populated
 
@@ -163,60 +187,83 @@ def populate(orbfit_dict, mpcorb_template):
 def populate_CAR_COM( eq1dict, mpcorb_populated):
     '''
     # Populate best-fit orbit data (CAR & COM components)
+
+    # NB, the template for mpcorb_pop should contain something like ...
+        "coefficient_names" :        ["x","y","z","vx","vy","vz","yarkovski"],
+        "coefficient_values":        [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "coefficient_uncertainties": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "eigenvalues":               [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "covariance": {
+
     '''
     # Loop over the "coordtype" dictionaries that are required to be present
-    for coordtype in ['CAR','COM']:
+    for coordtype in ["CAR","COM"]:#['CAR','COM']:
         if coordtype in eq1dict.keys() and eq1dict[coordtype]:
 
             # check that covariances are numbered correctly, and place into covariance sub-dictionary
             # (a) we expect to see numbering from cov00 ...
             if 'cov00' in eq1dict[coordtype].keys():
                 covariance = {}
-                cov_keys = [key for key in eq1dict.keys() if key[:3]=='cov' and key[3:].isnumeric()]
+                cov_keys = [key for key in eq1dict[coordtype].keys() if key[:3]=='cov' and key[3:].isnumeric()]
                 for key in cov_keys:
-                    mpcorb_populated[coordtype]["covariance"][key] = eq1dict[key]
-                    
+                    mpcorb_populated[coordtype]["covariance"][key] = eq1dict[coordtype][key]
+            
             # (b) older versions have different numbering (see cov10 in *std_format_els*)
             # - *** Not dealing with that for now ***
             
 
-            # rename elements according to coordtype
-            populate_els(mpcorb_populated[coordtype]["elements"], eq1dict[coordtype], coordtype)
-                
-            
-def populate_els(mpcorb_element_dict, orbfit_component_dict, coordtype):
+            # populate the coefficient_names & coefficient_values for the elements 
+            populate_els(mpcorb_populated[coordtype], eq1dict[coordtype] , coordtype)
+
+            # populate eigval & uncertainties (NB uncertainties split elements -vs- non-gravs) 
+            mpcorb_populated[coordtype]["eigenvalues"] = eq1dict[coordtype]["eigval"]
+            mpcorb_populated[coordtype]["coefficient_uncertainties"] = eq1dict[coordtype]["rms"]
+            #mpcorb_populated[coordtype]["non_grav_uncertainty"] = eq1dict[coordtype]["rms"][6:]
+            #mpcorb_populated[coordtype][] = eq1dict[coordtype]["element_order"]
+
+    # populate non-grav components 
+    populate_nongravs(mpcorb_populated , eq1dict) 
+
+def populate_els(mpcorb_element_dict, orbfit_component_dict , coordtype):
     """
     Rename elements to be human-readable
+    N.B. This is for a single coordtype (i.e. CAR *or* COM)
+
     """
+    # Here we create a list of the element names that are used in orbfit_component_dict
     orbfit_element_names = [ "element" + str(_) for _ in range(6)]
-    
-    if coordtype == 'CAR':
-        elslist = ['x','y','z','vx','vy','vz']
-    elif coordtype == 'COM':
-        elslist = ['q','e','i','node','argperi','peri_time']
-    else:
-        print('rename_els : '+coordtype+' : unknown coordtype?')
-        elslist = []
 
-    if elslist:
-        for orbfit_element_name, mpcorb_name in zip(orbfit_element_names, elslist ):
-            mpcorb_element_dict[mpcorb_name] = orbfit_component_dict[orbfit_element_name]
+    # Some of the old dicts from the db may not have the 'element_order' variable ... 
+    if 'element_order' not in orbfit_component_dict:
+      if coordtype == 'CAR':
+        orbfit_component_dict['element_order'] = ['x','y','z','vx','vy','vz']
+      if coordtype == 'COM':
+        orbfit_component_dict['element_order'] = ['q','e','i','node','argperi','peri_time']
 
-def populate_nongravs( eq1dict , mpcorb_populated ):
+
+    # Here we extract the human-readable element names
+    mpcorb_element_dict["coefficient_names"] = orbfit_component_dict['element_order'] 
+    mpcorb_element_dict["coefficient_values"]= [ orbfit_component_dict[_] for _ in orbfit_element_names]
+
+
+
+def populate_nongravs( mpcorb_populated , eq1dict ):
     """
     Function to populate nongrav data in the appropriate sections of the mpcorb_populated dict
     """
-
     # Loop over the "coordtype" dictionaries that are required to be present
     for coordtype in ['CAR','COM']:
         if coordtype in eq1dict.keys() and eq1dict[coordtype]:
             d = eq1dict[coordtype]
-            
+   
+            # try to instantiate an empty dict ... MJP-2023:01:25
+            mpcorb_populated[coordtype]['non_grav_uncertainty'] = {} 
+        
             # Do we have any non-gravs ?
             if d["numparams"] == 6 and d["nongrav_model"] == 0:
-                mpcorb_populated['non_grav_data']['non_gravs'] = False
+                mpcorb_populated["non_grav_booleans"]["non_gravs"] = False
             elif d["numparams"] > 6 and d["nongrav_model"] > 0:
-                mpcorb_populated['non_grav_data']['non_gravs'] = True
+                mpcorb_populated["non_grav_booleans"]["non_gravs"] = True
             else:
                 raise Exception("Unexpected combination of nongrav parameters...")
 
@@ -239,20 +286,28 @@ def populate_nongravs( eq1dict , mpcorb_populated ):
             #
             # We only need to do any work if there are non-gravs
             # (the default/template is correct for standard integrations which lack non-gravs)
-            if mpcorb_populated['non_grav_data']['non_gravs']:
+            if mpcorb_populated["non_grav_booleans"]["non_gravs"]:
                 
                 # Asteroidal ...
                 if   d["nongrav_model"] == 1 and d["nongrav_params"] == 2:
                 
                     # Solar Radn Pressure
                     if  1 in d["nongrav_type"] and d["numparams"] in [7,8]:
-                        mpcorb_populated['non_grav_data']['non_grav_booleans']['srp']   = True
-                        mpcorb_populated[coordtype]['non_grav_coefficients']['srp_coeff']   = d["nongrav_vals"][0]
+                        mpcorb_populated['non_grav_booleans']['non_grav_model']['srp']   = True
+                        mpcorb_populated['non_grav_booleans']['non_grav_coefficients']['srp']   = True
+
+                        mpcorb_populated[coordtype]['coefficient_names']  += ['srp']
+                        mpcorb_populated[coordtype]['coefficient_values'] += [d["nongrav_vals"][0]]
+                        #mpcorb_populated[coordtype]['non_grav_uncertainty']['srp_coeff']    = d["rms"][6] 
 
                     # Yarkovski
                     if 2 in d["nongrav_type"] and d["numparams"] in [7,8]:
-                        mpcorb_populated['non_grav_data']['non_grav_booleans']['yarkovski'] = True
-                        mpcorb_populated[coordtype]['non_grav_coefficients']['yarkovski_coeff'] = d["nongrav_vals"][1]
+                        mpcorb_populated['non_grav_booleans']['non_grav_model']['yarkovski'] = True
+                        mpcorb_populated['non_grav_booleans']['non_grav_coefficients']['yarkovski'] = True
+
+                        mpcorb_populated[coordtype]['coefficient_names']  += ['yarkovski']
+                        mpcorb_populated[coordtype]['coefficient_values'] += [d["nongrav_vals"][1]]
+                        #mpcorb_populated[coordtype]['non_grav_uncertainty']['yarkovski_coeff'] = d["rms"][6] if d["numparams"] == 7 else d["rms"][7]
 
                     # Error
                     if d["numparams"] not in [7,8] or d["nongrav_type"] not in [[1],[2],[1,2]]:
@@ -264,15 +319,15 @@ def populate_nongravs( eq1dict , mpcorb_populated ):
                     
                     # Marsden
                     if d["nongrav_model"] == 1:
-                        mpcorb_populated['non_grav_data']['non_grav_booleans']['marsden'] = True
+                        mpcorb_populated['non_grav_booleans']['non_grav_model']['marsden'] = True
 
                     # Yeomans and Chodas
                     elif d["nongrav_model"] == 2:
-                        mpcorb_populated['non_grav_data']['non_grav_booleans']['yc'] = True
+                        mpcorb_populated['non_grav_booleans']['non_grav_model']['yc'] = True
 
                     # Yabushita
                     elif d["nongrav_model"] == 3:
-                        mpcorb_populated['non_grav_data']['non_grav_booleans']['yabushita'] = True
+                        mpcorb_populated['non_grav_booleans']['non_grav_model']['yabushita'] = True
 
                     # Error
                     else:
@@ -289,13 +344,14 @@ def populate_nongravs( eq1dict , mpcorb_populated ):
                         if k in d["nongrav_type"]:
                             for i,orbfit_sig in enumerate(k):
                                 # Extract the desired names
-                                bool_name = v[i]
-                                coeff_name= v[i]+'_coeff'
+                                # bool_name = v[i]
+                                coeff_name= v[i] # +'_coeff'
                                 # Set bool
-                                mpcorb_populated['non_grav_data']['non_grav_booleans'][bool_name] = True
+                                mpcorb_populated	['non_grav_booleans']["non_grav_coefficients"][coeff_name] = True
                                 # Set coeff
-                                mpcorb_populated[coordtype]['non_grav_coefficients'][coeff_name] = d["nongrav_vals"][i]
-                
+                                mpcorb_populated[coordtype]['coefficient_names']  += [coeff_name]
+                                mpcorb_populated[coordtype]['coefficient_values'] += [d["nongrav_vals"][i]]
+                                #mpcorb_populated[coordtype]['non_grav_uncertainty'][coeff_name] = d["rms"][6 + i]
                 # Error
                 else:
                     raise Exception
@@ -303,40 +359,161 @@ def populate_nongravs( eq1dict , mpcorb_populated ):
     return True
     
     
-def populate_software_data(orbfit_dict, mpcorb_populated):
+def populate_software_data(orbfit_other_dict, mpcorb_populated):
     '''
     # Populate software data
-    '''
-    pass
 
-def populate_system_data(orbfit_dict, mpcorb_populated  ):
+    "software_data": {
+                "fitting_software_name",
+                "fitting_software_version",
+                "fitting_datetime",
+                "mpcorb_version",
+                "mpcorb_creation_datetime"
+    },
+
+    '''
+
+    mpcorb_populated["software_data"]["fitting_datetime"]         = orbfit_other_dict["orbfit_run_datetime"]
+    mpcorb_populated["software_data"]["mpcorb_creation_datetime"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
+
+def populate_system_data(orbfit_other_dict, mpcorb_populated  ):
     '''
     # Populate system data
     '''
     pass
     
-def generate_system_dictionary(elsdict):
-    """ put system data into a dictionary """
-    # THE CHECKS WILL BECOME UNNECESSARY GIVEN VALIDATION
-    return {    "eph"    : 'JPLDE431'   if not elsdict['eph']   else elsdict['eph'],
-                "refsys" : 'ECLM J2000' if not elsdict['refsys'] else elsdict['refsys']}
 
 
-def populate_designation_data(orbfit_dict, mpcorb_populated):
+def populate_designation_data( rwodict, mpcorb_populated):
     '''
-    # Populate designation_data
-    *** Requires access to internal MPC routines / database ***
+    # Populate designation_data & categorization data  
     '''
-    if 'permid' in orbfit_dict['stats_dict'] and orbfit_dict['stats_dict']['permid']:
-        orbfitdes = orbfit_dict['stats_dict']['permid']
+    nominal_label = str(rwodict["optical_list"][0]["name"])
+
+    # Query the designation-tables using Nora's designation-identifier service
+    # NB: I don't like having to hardpaste all the connection details
+    # - I'd prefer to use some default connection func/class: https://github.com/Smithsonian/mpc-software/issues/28
+    with DatabaseClient.PostgresClient(host='localhost', port='5432', database='vmsops', user='postgres') as db:
+      result = identifier.get_ids( nominal_label, db, verbose=True, use_materialized_view=False)
+    
+    if result['status'] == 'Found':
+      mpcorb_populated['designation_data'].update( result['results'] ) # N.B. We extract the inner dictionary of designations
+
+
+    # Store the category information 
+    if "object_type" in mpcorb_populated['designation_data']:
+      mpcorb_populated['categorization']["object_type_int"] = mpcorb_populated['designation_data']["object_type"]["integer"]
+      mpcorb_populated['categorization']["object_type_str"] = mpcorb_populated['designation_data']["object_type"]["key"]
+      del(mpcorb_populated['designation_data']["object_type"])
+
+
+
+
+def compute_and_populate_orbit_quality_metrics(eq0dict , mpcorb_populated):
+    ''' COMPUTE ORBIT QUALITY METRICS
+     - Taken from "create_output_dictionaries..." by FS
+    # Compute orbit quality metrics from the eq0 file
+    # We need to compute the SNR of the orbital elements
+    # in 'CARtesian' coordinates
+    # and check whether those values are in predefinite ranges
+    # Usage:
+    #  snr, snr_below_1, snr_below_3 = compute_orbit_quality_metrics(eq0dict)
+    # eq0dict = dictionary created from the eq0file
+    # Get RMS & then calc SNR
+    '''
+
+    car_rms = [float(x) for x in eq0dict['CAR']['rms']]
+    car_els = [float(eq0dict['CAR'][x]) for x in ['element0','element1','element2','element3','element4','element5']]
+    car_sn = [abs(car_els[ind])/car_rms[ind] for ind in range(6)]
+    sig_to_noise_ratio = car_sn
+    if any([x<3 for x in car_sn]):
+        snr_below_3 = True
+        if any([x<1 for x in car_sn]):
+               snr_below_1 = True
+        else:
+            snr_below_1 = False
     else:
-        orbfitdes = orbfit_dict['stats_dict']['provid']
+        snr_below_3 = False
+        snr_below_1 = False
 
-    mpcorb_populated['designation_data'] = {}#to_names_dict( orbfitdes )
+    #Orbit quality metrics dictionary
+    mpcorb_populated['orbit_fit_statistics']['sig_to_noise_ratio'] = sig_to_noise_ratio
+    mpcorb_populated['orbit_fit_statistics']['snr_below_3'] = snr_below_3
+    mpcorb_populated['orbit_fit_statistics']['snr_below_1'] = snr_below_1
 
-def populate_orbit_fit_statistics(orbfit_dict, mpcorb_populated):
+    #SNR values to define the orbit quality
+    # good if   SNR>3
+    # poor if 1<SNR<3
+    # unreliable if SNR<1
+    if snr_below_1:
+        orbit_quality = 'unreliable'
+    elif snr_below_3:
+        orbit_quality = 'poor'
+    else:
+        orbit_quality = 'good'
+
+    mpcorb_populated['orbit_fit_statistics']['orbit_quality'] = orbit_quality
+
+
+
+def get_and_populate_obs_number(rwodict , mpcorb_populated):
+    ''' Counts the number of obs (of various types) used in the orbit
+    Taken from *get_obs_number* in "create_output_dictionaries..." by FS
+    '''
+    mpcorb_populated['orbit_fit_statistics']['nobs_optical'] = len( rwodict['optical_list'] )
+    mpcorb_populated['orbit_fit_statistics']['nobs_optical_sel'] = len( [x for x in rwodict['optical_list'] if 'a_select' in x.keys() and x['a_select'] != '0'] )
+
+    mpcorb_populated['orbit_fit_statistics']['nobs_radar'] = len(rwodict['radar_list'])
+    mpcorb_populated['orbit_fit_statistics']['nobs_radar_sel'] = len( [x for x in rwodict['radar_list'] if 'a_select' in x.keys() and x['a_select'] != '0' ] )
+
+    mpcorb_populated['orbit_fit_statistics']['nobs_total'] = mpcorb_populated['orbit_fit_statistics']['nobs_optical'] + mpcorb_populated['orbit_fit_statistics']['nobs_radar']
+    mpcorb_populated['orbit_fit_statistics']['nobs_total_sel'] = mpcorb_populated['orbit_fit_statistics']['nobs_optical_sel'] + mpcorb_populated['orbit_fit_statistics']['nobs_radar_sel']
+
+
+
+def compute_and_populate_arc_lengths(rwodict , mpcorb_populated):
+    ''' compute the arc length from the rwo dict 
+        Taken from *compute_arc_lengths* in "create_output_dictionaries..." by FS
+    ''' 
+    
+    #List of observations from rwodict
+    obslist     = [obs for obs in rwodict['optical_list'] if obs['T'] != 'X']
+    obslist_sel = [obs for obs in rwodict['optical_list'] if obs['T'] != 'X' if 'a_select' in obs.keys() and obs['a_select'] != '0' ]
+
+    #ALL OBS: Initial and final time
+    timebegin = [int(obslist[0]['year']),int(obslist[0]['month']),float(obslist[0]['day'])]
+    timeend = [int(obslist[-1]['year']),int(obslist[-1]['month']),float(obslist[-1]['day'])]
+    time_diff = round(ma.to_julian_date(timeend[0],timeend[1],timeend[2])-ma.to_julian_date(timebegin[0],timebegin[1],timebegin[2]))
+    if time_diff < 365.25:
+        arc_length = str(time_diff)+' days'
+    else:
+        arc_length = str(timebegin[0])+'-'+str(timeend[0]) # MJP <<-- 
+
+    #SELECTED OBS: Initial and final time
+    timebegin = [int(obslist_sel[0]['year']),int(obslist_sel[0]['month']),float(obslist_sel[0]['day'])]
+    timeend = [int(obslist_sel[-1]['year']),int(obslist_sel[-1]['month']),float(obslist_sel[-1]['day'])]
+    time_diff = round(ma.to_julian_date(timeend[0],timeend[1],timeend[2])-ma.to_julian_date(timebegin[0],timebegin[1],timebegin[2]))
+    if time_diff < 365.25:
+        arc_length_sel = str(time_diff)+' days'
+    else:
+        arc_length_sel = str(timebegin[0])+'-'+str(timeend[0]) # MJP <<-- 
+
+    # Populate the dictionary ...
+    mpcorb_populated['orbit_fit_statistics']['arc_length_total'] =  arc_length 
+    mpcorb_populated['orbit_fit_statistics']['arc_length_sel'] = arc_length_sel 
+
+
+
+
+
+def populate_orbit_fit_statistics(eq0dict,eq1dict,rwodict,otherdict, mpcorb_populated):
     '''
     # Populate orbit_fit_statistics
+    Much of this taken from *define_fit_succ_from_dictionaries* in "create_output_dictionaries..." by FS 
+
+
+    '''
+
     '''
     # Extract from orbit_quality_metrics ...
     for key in ['sig_to_noise_ratio',
@@ -347,30 +524,81 @@ def populate_orbit_fit_statistics(orbfit_dict, mpcorb_populated):
                 #'score2'
                 ]:
         mpcorb_populated['orbit_fit_statistics'][key] = orbfit_dict['orbit_quality_metrics'][key]
-        
-    # Extract from stats_dict ...
-    for key in ['orbit_quality',
-                'normalized_RMS',
-                'not_normalized_RMS',
-                'nopp',
-                ]:
-        mpcorb_populated['orbit_fit_statistics'][key] = orbfit_dict['stats_dict'][key]
-
-    # Extract from elsewhere ...
-    mpcorb_populated['orbit_fit_statistics']['numparams'] = orbfit_dict['eq1dict']['CAR']['numparams']
-
-    # Quantities not yet populated ...
     '''
-                "nobs_total"            : 0,
-                "nobs_total_sel"        : 0,
-                "nobs_optical"          : 0,
-                "nobs_optical_sel"      : 0,
-                "nobs_radar"            : 0,
-                "nobs_radar_sel"        : 0,
-                "arc_length_total"      : 0,
-                "arc_length_sel"        : 0,
-    '''
+
+    # --------- Define whether fit was successful ----------------
+    # ------------------------------------------------------------
+    # Default: Unsuccessful...
+    fit_success = False
+    no_orbit    = True
+
+    # Orbit-extension ...
+    if otherdict['orbfit_computation_type'] in ['EXTENSION']: # <<-- I.e. orbit-extension
+      # Here we are saying that if these three dicts exists and have certain critical fields populated, then we have a successful run:
+      if eq0dict and eq1dict and rwodict and \
+         'CAR' in eq0dict and 'COM' in eq0dict and \
+         'CAR' in eq1dict and 'COM' in eq1dict and \
+         'rmsast' in rwodict and rwodict['rmsast'] != '0' :
+        fit_success = True
+        no_orbit = False
+
+    # IOD 
+    # *** NEED TO COME BACK TO THIS AND DECIDE HOW TO DO THE CHECKS FOR MCMCM IN THE CASE OF A NO-ORBIT NEOCP RUN *** 
+    if otherdict['orbfit_computation_type'] in ['IOD']:
+      pass
+
+    # COMET 
+    elif otherdict['orbfit_computation_type'] == 'comet':
+      pass
+
+    # fucked-up 
+    else:
+      pass
+
+    if no_orbit:
+      mpcorb_populated['orbit_fit_statistics']['orbit_quality'] = 'no_orbit'
+
+
+    # --------- Calculate additional top-line stats --------------
+    # ------------------------------------------------------------
+    if 'fit_success':
+
+        #Orbit quality metrics and orbit quality definition
+        # - Populates "sig_to_noise_ratio", "snr_below_3", "snr_below_1", & "orbit_quality" in mpcorb_populated['orbit_fit_statistics']... 
+        compute_and_populate_orbit_quality_metrics(eq0dict , mpcorb_populated )
+
+        #Total number of observations, number of observations selected, normalized RMS
+        # - Populates 'nobs_total', 'nobs_total_sel', 'nobs_optical', 'nobs_optical_sel', 'nobs_radar' & 'nobs_radar_sel' in mpcorb_populated['orbit_fit_statistics']
+        get_and_populate_obs_number( rwodict ,mpcorb_populated )
+
+        # Topline RMS 
+        mpcorb_populated['orbit_fit_statistics']['normalized_RMS']     = copy.deepcopy(rwodict['rmsast'])
+        mpcorb_populated['orbit_fit_statistics']['not_normalized_RMS'] = None ##<<-- ***NEEDS TO BE CORRECTED TO GET Non-Normalised RMS *** 
+
+        # Number of oppositions 
+        mpcorb_populated['orbit_fit_statistics']['nopp']     = otherdict['nopp']
+
+        #Arc length
+        compute_and_populate_arc_lengths(rwodict , mpcorb_populated)
+
+        #Bad tracklet identification
+        # MJP: 2023-03: Turning this stuff off, as I assume it must have been calculated earlier if an MPC_ORB_JSON is being calculated
+        #               (i.e. I assume we only make the mpcorb.json if the orbit is good enough ...)
+        #if "bad_trk_dict" not in data_dict: data_dict["bad_trk_dict"] = {}
+        #data_dict["stats_dict"]['bad_trk'], data_dict['bad_trk_dict']['bad_trk_list_ids'], data_dict['bad_trk_dict']['bad_trk_list_obs80'] = identify_bad_tracklets(data_dict)
+        #data_dict['bad_trk_dict']['bad_trk_params'] = data_dict['otherdict']['badtrk_params']
+
+        #We change the definition of success if nobs_sel < nobs_tot/2
+        if mpcorb_populated['orbit_fit_statistics']['nobs_total_sel'] < mpcorb_populated['orbit_fit_statistics']['nobs_total']/2:# and data_dict["stats_dict"]['bad_trk']:
+            fit_success = False
+            mpcorb_populated['orbit_fit_statistics']['orbit_quality'] = 'no_orbit'
+
+
+
     
+    # Extract from elsewhere ...
+    mpcorb_populated['orbit_fit_statistics']['numparams'] = eq1dict['CAR']['numparams']
+
 
 
 def populate_magnitude_data(eq1dict , mpcorb_populated ):
@@ -391,15 +619,27 @@ def populate_epoch_data(eq1dict , mpcorb_populated ):
     mpcorb_populated["epoch_data"]["epoch"]         = eq1dict["CAR"]["epoch"]
 
 
-def populate_moid_data(orbfit_dict, mpcorb_populated  ):
+def populate_moid_data(moidsdict, mpcorb_populated  ):
     '''
     # Populate moid_data
-    '''
-    pass
 
-def populate_categorization(orbfit_dict, mpcorb_populated  ):
+    "moid_data": {
+        "Venus": null,
+        "Earth": null,
+        "Mars": null,
+        "Jupiter": null,
+        "moid_units": "au"
+    },
+
+    '''
+    for key,value in moidsdict.items():
+      if key in mpcorb_populated["moid_data"]:
+        mpcorb_populated["moid_data"][key] = value
+
+def populate_categorization(orbfit_other_dict, mpcorb_populated  ):
     '''
     # Populate categorization
+    
     '''
     pass
 
@@ -426,7 +666,7 @@ def to_nums(v):
     elif isinstance(v, (int, float, type(None))):
         return v
     else:
-        raise Exception(f"Unexpected type of variable in *to_nums* : {type(v)} ")
+        raise Exception(f"Unexpected type of variable in *to_nums* : {type(v)} : {v}")
         return v
 
 def attempt_str_conversion(s):
@@ -450,278 +690,8 @@ def attempt_str_conversion(s):
         return f
         
 
-# ------------------------------------
-# Designation Functions
-# - Hopefully can be replaced by API-call
-# ------------------------------------
-
-def orbfitdes_to_packeddes(desig_up):
-    """
-    Convert orbfit name to packed desig for numbered objects and prov desigs only
-    Requires access to internal MPC routines
-    """
-
-    if desig_up.isnumeric():
-        desig = mc.unpacked_to_packed_desig('('+desig_up+')')
-    elif desig_up[:4].isnumeric() and len(desig_up) > 4:
-        desig = mc.unpacked_to_packed_desig(desig_up[:4]+' '+desig_up[4:])
-    elif desig_up[0] in ['A','C','P']:
-        if desig_up[0] == 'A' and desig_up[1:4].isnumeric() and not desig_up[4].isnumeric():
-            desig = mc.unpacked_to_packed_desig(desig_up[:4]+' '+desig_up[4:])
-        elif len(desig_up) > 5:
-            desig = mc.unpacked_to_packed_desig(desig_up[0]+'/'+desig_up[1:5]+' '+desig_up[5:])
-        else:
-            desig = mc.unpacked_to_packed_desig(desig_up[0]+'/'+desig_up[1:])
-    elif len(desig_up) < 5 and desig_up[-1] in ['P','I']:
-        desig = '0'*(5-len(desig_up)) + desig_up[-1]
-    else:
-        desig = desig_up
-    
-    return desig
-
-
-def to_names_dict(orbfitdes):
-
-    """
-    Convert orbfit name to provisional/permanent desig, store in dictionary
-    *** Requires access to internal MPC routines / database ***
-    """
-
-    result = {}
-
-    if isinstance(orbfitdes,int):
-
-        # this is numbered object, get provid out of numbered_identifications
-        result['permid'] = str(orbfitdes)
-        sqlstr = f"SELECT packed_primary_provisional_designation,iau_name FROM numbered_identifications WHERE permid='{orbfitdes}'"
-        try:
-            desig,name = mpc_psql.psql_execute_query(sqlstr)[0]
-            primdesig = ids.get_id_list(desig,all=True)[0]
-            if not name:
-                name = ''
-        except:
-            print(orbfitdes+' : not in numbered_identifications?')
-            primdesig = ''
-            name = ''
-    else:
-
-        # orbfitdes is a provisional desig, so
-        # 1) check if this is the primary provisional desig
-        # 2) check if this is numbered object
-        desig = orbfitdes_to_packeddes(orbfitdes)
-        try:
-            primdesig = ids.get_id_list(desig)[0]
-        except:
-            print(orbfitdes+' : not in identifications table?')
-            primdesig = desig
-        try:
-            sqlstr = f"SELECT permid,iau_name FROM numbered_identifications WHERE packed_primary_provisional_designation='{orbfitdes}';"
-            permid,name = mpc_psql.psql_execute_query(sqlstr)[0]
-            if not permid:
-                permid = ''
-            if not name:
-                name = ''
-        except:
-            permid = ''
-            name = ''
-        result['permid'] = permid
-
-    # create names dictionary
-    result['packed_primary_provisional_designation'] = primdesig
-    if mc.packed_to_unpacked_desig(primdesig):
-        result['unpacked_primary_provisional_designation'] = mc.packed_to_unpacked_desig(primdesig)
-    else:
-        result['unpacked_primary_provisional_designation'] = desig
-    result['orbfit_name'] = orbfitdes
-    result['iau_name'] = name
-
-    return result
-    
 
 
 
 
 
-# ------------------------------------
-# Archaic Functions
-# ------------------------------------
-'''
-def save_to_file(standard_format_dict , output_filepath):
-    """ """
-    with open(output_filepath, 'w') as f:
-        json.dump(standard_format_dict, f, indent=4)
-
-'''
-
-'''
-def renumber_cov(covdict,numparams):
-    """
-    Renumber covariances to have index ij for covariance between element i and element j
-    """
-    
-    indexlist = get_indexlist(numparams)
-
-    newcovdict = {}
-    for ind in range(len(indexlist)):
-        try:
-            newcovdict['cov'+indexlist[ind]] = covdict['cov'+'{:02d}'.format(ind)]
-        except:
-            print('renumber_cov : missing covariance entry cov'+'{:02d}'.format(ind))
-
-    return newcovdict
-'''
-
-'''
-def get_indexlist(numparams):
-    """
-    Compute indexes ij for covariance entries sigma_ij when extracting them from orbfit's compressed format
-    """
-    
-    indexes = []
-    if numparams >=6:
-            for ii in range(numparams):
-                for jj in range(ii,numparams):
-                    indexes.append(str(ii)+str(jj))
-    else:
-        print("get_indexlist : can't deal with this value of numparams ("+numparams+')')
-
-    return indexes
-'''
-
-
-def std_format_els(oldelsdict):
-    """
-    Convert direct-output orbfit elements dictionary to standard format for external consumption
-    """
-    
-    elsdict = copy.deepcopy(oldelsdict)
-    
-    # THESE LINES WILL BECOME UNNECESSARY GIVEN VALIDATION
-    if not elsdict['name']:
-        print("missing object name, can't convert")
-    elif 'CAR' not in elsdict.keys() or 'COM' not in elsdict.keys():
-        print("missing Cartesian and/or cometary elements, can't convert")
-    else:
-        
-        elsdict = to_nums(elsdict)
-
-        # delete unneeded global info
-        del elsdict['rectype']
-        del elsdict['format']
-           
-        # Construct a "System data" dictionary
-        elsdict["system_data"] = generate_system_dictionary(elsdict)
-        for key in ['resys','eph']:
-            if key in elsdict.keys(): del elsdict[key]
-
-        # Construct names dictionary
-        elsdict['designation_data'] = to_names_dict(elsdict['name'])
-        del elsdict['name']
-        
-        # Loop over the "coordtype" dictionaries that may be present
-        for coordtype in ['EQU','KEP','CAR','COM','COT']:
-
-            if coordtype in elsdict.keys() and elsdict[coordtype]:
-                thiscoorddict = copy.deepcopy(elsdict[coordtype])
-
-                # delete unneeded info
-                del thiscoorddict['coordtype']
-                if 'nor00' in thiscoorddict.keys():
-                    nor_keys = [key for key in thiscoorddict.keys() if key[:3]=='nor' and key[3:].isnumeric()]
-                    for key in nor_keys:
-                        del thiscoorddict[key]
-                if 'wea' in thiscoorddict.keys():
-                    del thiscoorddict['wea']
-
-                # check that covariances are numbered correctly, and place into covariance sub-dictionary
-                if 'cov00' in thiscoorddict.keys():
-                    covariance = {}
-                    cov_keys = [key for key in thiscoorddict.keys() if key[:3]=='cov' and key[3:].isnumeric()]
-                    for key in cov_keys:
-                        covariance[key] = thiscoorddict[key]
-                        del thiscoorddict[key]
-                    thiscoorddict['covariance'] = covariance
-                if 'cov10' in thiscoorddict['covariance'].keys():
-                    thiscoorddict['covariance'] = renumber_cov(thiscoorddict['covariance'],int(thiscoorddict['numparams']))
-
-                # rename elements according to coordtype
-                thiscoorddict = rename_els(thiscoorddict,coordtype)
-                    
-                # convert nongrav info to human-readable format,
-                # and move the non-grav info to the top level
-                # (NB If multiple coordtypes, then this top-level will be overwritten. SHouldn't matter)
-                elsdict['nongrav_data'] = translate_nongravs(thiscoorddict)
-                for key in ['nongrav_type','nongrav_params','nongrav_model','nongrav_vals']:
-                    if key in thiscoorddict.keys(): del thiscoorddict[key]
-                
-                # move the magnitude info to the toplevel
-                # (NB If multiple coordtypes, then this top-level will be overwritten. SHouldn't matter)
-                elsdict['magnitude_data'] = generate_magnitude_dictionary(thiscoorddict)
-                for key in ['g','h']:
-                    if key in thiscoorddict.keys(): del thiscoorddict[key]
-
-                # move the eopch info to the top level
-                # (NB If multiple coordtypes, then this top-level will be overwritten. SHouldn't matter)
-                elsdict['epoch_data'] = generate_epoch_dictionary(thiscoorddict)
-                for key in ['timesystem','epoch']:
-                    if key in thiscoorddict.keys(): del thiscoorddict[key]
-
-                
-                # over-write the coordtype dict at the top level
-                elsdict[coordtype] = thiscoorddict
-        
-    return elsdict
-        
-'''
-def convert(orbfit_input , output_filepath = None ):
-    """
-    Convert direct-output orbfit elements dictionary to standard format for external consumption
-    
-    *** --------------------------------------------
-    *** THIS IS THE ORIGINAL VERSION
-    *** PURE "CONVERSION" FROM eq0-to-mpc_orb.json
-    *** WILL BE REPLACED BY "CONSTRUCTION" ABOVE
-    *** --------------------------------------------
-
-    
-    inputs:
-    -------
-    orbfit_input: dict or filepath
-     - valid convertible orbfit felfile dict/file
-    
-    returns:
-    --------
-    standard_format_dict
-     - mpc_orb.json compatible
-    
-    optionally:
-    -----------
-    if an output filepath is supplied, then the output-dictionary will also be saved to file
-    
-    """
-
-    # interpret the input (allow dict or filepath)
-    orbfit_dict, input_filepath = interpret.interpret(orbfit_input)
-
-    # check the input is valid
-    if not validate_orbfit_conversion(orbfit_dict):
-        return False
-
-    # do the conversion (this is the heart of the routine)
-    try:
-        standard_format_dict = std_format_els(orbfit_dict)
-    except:
-        return False
-        
-    # check the result is valid
-    if not validate_mpcorb(standard_format_dict):
-        return False
-        
-    # save to file (if required)
-    if input_filepath is not None or output_filepath is not None:
-        input_stem = input_filepath[:input_filepath.rfind(".json")]
-        output_filepath = output_filepath if output_filepath is not None else os.path.join(input_stem,"_mpcorb_",".json")
-        save_to_file(standard_format_dict , output_filepath)
-
-    return standard_format_dict
-'''

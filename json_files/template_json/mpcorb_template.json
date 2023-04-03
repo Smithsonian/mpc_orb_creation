@@ -1,31 +1,9 @@
 {
     "CAR": {
-        "element_units": {
-            "posn": "au",
-            "vel": "au/day"
-        },
-        "non_grav_units": {
-            "A1": "au/day^2",
-            "A2": "au/day^2",
-            "A3": "au/day^2",
-            "DT": "day"
-        },
-        "eigval": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ],
-        "rms": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ],
+        "coefficient_names" :        ["x","y","z","vx","vy","vz","yarkovski"],
+        "coefficient_values":        [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "coefficient_uncertainties": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 
+        "eigenvalues":               [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
         "covariance": {
             "cov00": 0.0,
             "cov01": 0.0,
@@ -82,49 +60,13 @@
             "cov88": null,
             "cov89": null,
             "cov99": null
-        },
-        "elements": {
-            "x": 0.0,
-            "y": 0.0,
-            "z": 0.0,
-            "vx": 0.0,
-            "vy": 0.0,
-            "vz": 0.0
-        },
-        "non_grav_coefficients": {
-            "A1_coeff": null,
-            "A2_coeff": null,
-            "A3_coeff": null,
-            "DT_coeff": null
         }
     },
     "COM": {
-        "element_units": {
-            "posn": "au",
-            "ang": "deg"
-        },
-        "non_grav_units": {
-            "A1": "au/day^2",
-            "A2": "au/day^2",
-            "A3": "au/day^2",
-            "DT": "day"
-        },
-        "eigval": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ],
-        "rms": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-        ],
+        "coefficient_names" :        ["q","e","i","node","argperi","peri_time","yarkovski"],
+        "coefficient_values":        [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "coefficient_uncertainties": [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
+        "eigenvalues":               [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
         "covariance": {
             "cov00": 0.0,
             "cov01": 0.0,
@@ -181,90 +123,80 @@
             "cov88": null,
             "cov89": null,
             "cov99": null
-        },
-        "elements": {
-            "q": 0.0,
-            "e": 0.0,
-            "i": 0.0,
-            "node": 0.0,
-            "argperi": 0.0,
-            "peri_time": 0.0
-        },
-        "non_grav_coefficients": {
-            "A1_coeff": null,
-            "A2_coeff": null,
-            "A3_coeff": null,
-            "DT_coeff": null
         }
     },
     "software_data": {
-        "software_name": "orbfit",
-        "software_version": "1.0",
-        "run_datetime": "2022:03:01"
+        "fitting_datetime": null, 
+        "fitting_software_name": "orbfit",
+        "fitting_software_version": "1.0",
+        "mpcorb_creation_datetime": null, 
+        "mpcorb_version": "0.4"
     },
     "system_data": {
         "eph": "DE431",
-        "refplane": "Ecliptic",
-        "EclipticObliquityArcseconds": "84381.448",
+        "refsys": "Ecliptic",
         "refframe": "ICRF",
-        "force_model": "????"
+        "force_model": "????",
+        "EclipticObliquityArcseconds":"84381.448"
     },
     "designation_data": {
-        "permid": "",
-        "packed_primary_provisional_designation": "",
+        "designation_count": 0,
         "unpacked_primary_provisional_designation": "",
-        "orbfit_name": "",
-        "iau_name": "",
+        "unpacked_secondary_provisional_designations": [
+            ""
+        ],
+        "packed_primary_provisional_designation": "",
         "packed_secondary_provisional_designations": [
             ""
         ],
-        "unpacked_secondary_provisional_designations": [
-            ""
-        ]
+        "permid": "",
+        "iau_name": "",
+        "orbfit_name": ""
     },
     "orbit_fit_statistics": {
-        "description": "Summary fit statistics associated with the best-fit orbit, the observations used, etc",
-        "properties": {
-            "sig_to_noise_ratio": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "snr_below_3": false,
-            "snr_below_1:": false,
-            "U_param": 0.0,
-            "score1": 0.0,
-            "score2": 0.0,
-            "orbit_quality": "good",
-            "normalized_RMS": 0.0,
-            "not_normalized_RMS": 0.0,
-            "nobs_total": 0,
-            "nobs_total_sel": 0,
-            "nobs_optical": 0,
-            "nobs_optical_sel": 0,
-            "nobs_radar": 0,
-            "nobs_radar_sel": 0,
-            "arc_length_total": 0,
-            "arc_length_sel": 0,
-            "nopp": 0,
-            "numparams": 6
-        }
+        "sig_to_noise_ratio": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+        ],
+        "snr_below_3": false,
+        "snr_below_1": false,
+        "U_param": 0.0,
+        "score1": 0.0,
+        "score2": 0.0,
+        "orbit_quality": "good",
+        "normalized_RMS": 0.0,
+        "not_normalized_RMS": 0.0,
+        "nobs_total": 0,
+        "nobs_total_sel": 0,
+        "nobs_optical": 0,
+        "nobs_optical_sel": 0,
+        "nobs_radar": 0,
+        "nobs_radar_sel": 0,
+        "arc_length_total": 0,
+        "arc_length_sel": 0,
+        "nopp": 0,
+        "numparams": 6
     },
-    "non_grav_data": {
+    "non_grav_booleans": {
         "non_gravs": false,
-        "non_grav_booleans": {
-            "yarkovsky": false,
-            "srp": false,
+        "non_grav_model": {
             "marsden": false,
-            "yc": false,
+            "srp": false,
             "yabushita": false,
+            "yarkovski": false,
+            "yc": false
+        },
+        "non_grav_coefficients": {
             "A1": false,
             "A2": false,
             "A3": false,
-            "DT": false
+            "DT": false,
+            "srp": false,
+            "yarkovski": false
         }
     },
     "magnitude_data": {
@@ -276,7 +208,7 @@
         "photometric_model": "????"
     },
     "epoch_data": {
-        "timesystem": "TT",
+        "timesystem": "TDT",
         "timeform": "MJD",
         "epoch": 0.0
     },
@@ -284,8 +216,7 @@
         "Venus": null,
         "Earth": null,
         "Mars": null,
-        "Jupiter": null,
-        "moid_units": "au"
+        "Jupiter": null
     },
     "categorization": {
         "object_type_str": "",

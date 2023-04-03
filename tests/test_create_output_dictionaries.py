@@ -4,9 +4,8 @@ import glob
 import json 
 
 # marsden imports
-sys.path.append('/sa/orbfit_output_dictionary/')
-import create_output_dictionariesNEW2022_03_XX as cod #create_output_dictionaries as cod 
-import fetch_orbit_results as fetch 
+from mpc_orb_creation import create_output_dictionariesNEW2022_03_XX as cod #create_output_dictionaries as cod 
+from mpc_orb_creation import utility_fetch_orbit_results as fetch 
 
 # directories...
 test_dir = os.path.dirname(os.path.realpath(__file__))

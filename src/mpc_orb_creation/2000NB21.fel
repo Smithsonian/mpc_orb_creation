@@ -1,0 +1,4 @@
+format  = 'OEF2.0'       ! file format
+rectype = 'ML'           ! record type (1L/ML)
+refsys  = ECLM J2000     ! default reference system
+END_OF_HEADER

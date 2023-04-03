@@ -16,20 +16,25 @@ import pprint
 
 # MPC module imports
 # -----------------------
-try:
-    sys.path.append('/sa/python_libs')
-    import orbfit_to_dict as o2d
-except:
-    raise Exception("This conversion routine is intended for internal MPC usage and requires modules that are likely to only be available on internal MPC machines")
+sys.path.append('/sa/orbit_utils/')
+import create_output_dictionaries2023 as create_output
+
+from count_opps import count_opps
+
+
+from mpc_orb_creation import construct
+
+import orbfit_to_dict
+
+sys.path.append('/sa/python_libs'); import mpc_psql
+
 
 # local imports
 # -----------------------
-from . import construct
-from . import utility_fetch_orbit_results as fetch  
-from . import create_output_dictionariesNEW2022_03_XX as cod
+#from . import construct
+import utility_fetch_orbit_results as fetch  
+#from . import create_output_dictionariesNEW2022_03_XX as cod
 
-# Import mpc ...
-sys.path.append('/sa/python_libs'); import mpc_psql
 
 # -------------------------------------------------------------------------
 # Utility code to populate orbfit_result table with mpc_orb_json(b) results 
@@ -41,41 +46,73 @@ def populate_orbfit_results( n_max = None ):
 
     # Get list of designations to process 
     unpacked_desig_list = fetch.query_unpacked_orbfit_results(n_max=n_max )
-
+    print(f'len(unpacked_desig_list)={len(unpacked_desig_list)}')
+  
     # Loop through designations 
     for n, unpacked in enumerate(unpacked_desig_list):
       print(n, unpacked) 
 
       try:
         # Get Data for Designation from Database
-        rwo_dict , mid_epoch_dict,  standard_epoch_dict, updated_at = fetch.get_dictionaries( unpacked = unpacked )
+        rwo_dict , mid_epoch_dict,  standard_epoch_dict, updated_at, ele220 = fetch.get_dictionaries( unpacked = unpacked )
 
-        # Convert to standard orbfit dictionary
-        orbfit_standard_dict = make_standard_dict(rwo_dict , mid_epoch_dict,  standard_epoch_dict) 
-      
-        # Convert to mpc_orb.json
-        mpc_orb_dict = construct.construct(orbfit_standard_dict) 
+        # Skip on to the next object if we do not have data to work with ...
+        if not (rwo_dict and mid_epoch_dict and mid_epoch_dict):
+          continue         
+
+        # "otherdict" to pass in assorted parameters ...
+        # NB: Because we are 'back-filling' from the database, some of these other params are going to be untrustworthy
+        # - E.g. the badtrk_params *may* NOT be the ones used at the time the orbit wasa evaluated
+        otherdict = {}
+        otherdict['orbfit_computation_type'] = 'EXTENSION'
+
+        # Use updated_at as the time of orbfit-run (close enough) 
+        otherdict['orbfit_run_datetime'] = updated_at.strftime("%Y/%m/%d_%H:%M:%S") if updated_at else ''
+
+        # collect number of oppositions from ele220
+        if ele220 is None:
+ 
+          print('HERE: ele220=', ele220)
+          orbfit_to_dict.dict_to_rwo(rwo_dict,'2000NB21.rwo')
+          orbfit_to_dict.dict_to_fel(standard_epoch_dict,'2000NB21.fel')
+          otherdict['nopp'] = count_opps(rwofile='2000NB21.rwo' , elsfile='2000NB21.fel'  )
+        else:
+          otherdict['nopp'] = int(ele220[140:144].strip())
+
+        moid_dict={}
+        mpcorb_dict = construct.construct( mid_epoch_dict, standard_epoch_dict ,rwo_dict, moid_dict, otherdict  )
+
+
+
+
+
+
+
 
         # Insert binary form of json into database
         # NB: At point of insert, check data is unchanged 
-        insert_mpc_orb_dict(unpacked, updated_at, mpc_orb_dict)
+        insert_mpc_orb_dict(unpacked, updated_at, mpcorb_dict)
 
       except Exception as e:
         print('Exception processing', n, unpacked )
         print(e)
         print()
- 
+
+
+      # Clean up any unnecessary files 
+      #os.system("rm *elements *oppfile.log *.clo *.err *.fel *.fga *.fop *.fou *.opp *.pro *.rms *.run *rwo fort.10 badtrkfile_*") 
 
     return True 
 
 def insert_mpc_orb_dict(unpacked, updated_at, mpc_orb_dict):
   ''' '''
+  print('insert_mpc_orb_dict')
   # Connect to db
   cnx = mpc_psql.connect_to_vmsops()#database='vmsops',host='localhost')
 
   # Dump dict to 
   my_json = json.dumps(mpc_orb_dict)
-
+  print(f'type my_json = {type(my_json)}')
   # Construct sql
   sql_str = f"UPDATE orbfit_results SET mpc_orb_jsonb = '{my_json}' WHERE unpacked_primary_provisional_designation = '{unpacked}' and updated_at = '{updated_at}'; " 
 
@@ -83,6 +120,7 @@ def insert_mpc_orb_dict(unpacked, updated_at, mpc_orb_dict):
   cursor = cnx.cursor()
   cursor.execute(sql_str)
   cnx.commit() 
+  print('DONE:insert_mpc_orb_dict')
 
 
 def make_standard_dict(rwo_dict , mid_epoch_dict,  standard_epoch_dict):
@@ -152,4 +190,5 @@ def create_input_dict(workdir, arg_dict ,args):
 
     return input_dict
 
-
+if __name__ == "__main__":
+  populate_orbfit_results()

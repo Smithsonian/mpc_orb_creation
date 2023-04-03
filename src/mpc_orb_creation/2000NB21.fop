@@ -1,0 +1,19 @@
+fitobs.
+	.astna0='2000NB21'
+	.ons_name=.T.
+	.obsdir0='opp_res'
+	.elefi0='2000NB21.elements'
+	.ecclim=4.99d0
+	.samax=2000.
+	.ahmax=6000.
+	.error_model='gaiaDR2_mix'
+IERS.
+	.extrapolation=.T.
+propag.
+	.irel=1
+	.ilun=1
+	.iast=17
+	.filbe='/share/apps/god_fit/ast_files/AST17'
+	.npoint=600
+	.dmea=0.2d0
+	.dter=0.05d0

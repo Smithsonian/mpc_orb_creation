@@ -61,7 +61,7 @@ def get_dictionaries(unpacked = None, packed = None):
   ''' 
   row = query_desig( unpacked = unpacked , packed = packed)
   if row: 
-    return row['rwo_json'] , row['mid_epoch_json'], row['standard_epoch_json'] , row['updated_at']
+    return row['rwo_json'] , row['mid_epoch_json'], row['standard_epoch_json'] , row['updated_at'] , row['ele220']
   else:
     return {}, {}, {} 
 
